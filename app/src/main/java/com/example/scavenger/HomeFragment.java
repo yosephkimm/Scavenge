@@ -11,9 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.scavenger.databinding.FragmentFirstBinding;
+import com.example.scavenger.databinding.FragmentHomeBinding;
 
 public class HomeFragment extends Fragment {
-    private FragmentFirstBinding binding;
+    private @NonNull FragmentHomeBinding binding;
 
     @Override
     public View onCreateView(
@@ -21,7 +22,7 @@ public class HomeFragment extends Fragment {
             Bundle savedInstanceState
     ) {
 
-        binding = FragmentFirstBinding.inflate(inflater, container, false);
+        binding = FragmentHomeBinding.inflate(inflater, container, false);
         return binding.getRoot();
 
     }
@@ -29,11 +30,11 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.buttonFirst.setOnClickListener(new View.OnClickListener() {
+        binding.logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 NavHostFragment.findNavController(HomeFragment.this)
-                        .navigate(R.id.action_FirstFragment_to_SecondFragment);
+                        .navigate(R.id.action_HomeFragment_to_FirstFragment);
             }
         });
     }
