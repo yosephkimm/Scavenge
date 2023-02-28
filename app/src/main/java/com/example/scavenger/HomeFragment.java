@@ -10,11 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.scavenger.databinding.FragmentFirstBinding;
 import com.example.scavenger.databinding.FragmentHomeBinding;
 
 public class HomeFragment extends Fragment {
-    private @NonNull FragmentHomeBinding binding;
+    private FragmentHomeBinding binding;
 
     @Override
     public View onCreateView(
