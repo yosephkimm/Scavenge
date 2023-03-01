@@ -1,5 +1,6 @@
 package com.example.scavenger;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -43,8 +44,11 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-    }
 
+    }
+    public void startHint(){
+        startActivity(new Intent(MainActivity.this, Hint.class));
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
