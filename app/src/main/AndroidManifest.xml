@@ -26,6 +26,10 @@
         <activity
             android:name=".Hint"
             android:theme="@style/Theme.Scavenger.TransparentTheme" />
+
+        <activity
+            android:name=".Mapping"
+            android:theme="@style/Theme.Scavenger.TransparentTheme" />
     </application>
 
 </manifest>

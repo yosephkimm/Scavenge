@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.scavenger.databinding.FragmentPlayHuntBinding;
 
@@ -27,17 +28,30 @@ public class PlayHunt extends Fragment {
 
     }
 
-    MainActivity mainActivity = (MainActivity) getActivity();
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
             binding.buttonHint.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     startActivity(new Intent(getActivity(), Hint.class));
-                    ((Activity) getActivity()).overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                    ((Activity) getActivity()).overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_in);
                 }
             });
-        }
+        binding.buttonQuit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavHostFragment.findNavController(PlayHunt.this)
+                        .navigate(R.id.action_PlayHunt_to_HomeFragment);
+            }
+        });
+        binding.buttonMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), Mapping.class));
+                ((Activity) getActivity()).overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_in);
+            }
+        });
+    }
 
     @Override
     public void onDestroyView() {

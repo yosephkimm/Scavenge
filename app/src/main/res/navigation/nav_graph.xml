@@ -31,10 +31,14 @@
         android:name="com.example.scavenger.PlayHunt"
         tools:layout="@layout/fragment_play_hunt">
 
+        <action
+            android:id="@+id/action_PlayHunt_to_HomeFragment"
+            app:destination="@id/HomeFragment" />
     </fragment>
     <activity
         android:id="@+id/Hint"
         android:name="com.example.scavenger.Hint"
+        android:label="@string/hint"
         tools:layout="@layout/hint_window"></activity>
 
 </navigation>
