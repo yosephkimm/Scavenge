@@ -11,6 +11,8 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.scavenger.databinding.FragmentFirstBinding;
 
+import java.util.Objects;
+
 public class FirstFragment extends Fragment {
 
     private FragmentFirstBinding binding;
@@ -28,6 +30,8 @@ public class FirstFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
 
         binding.login.setOnClickListener(new View.OnClickListener() {
             @Override
