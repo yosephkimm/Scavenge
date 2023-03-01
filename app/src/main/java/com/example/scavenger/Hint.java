@@ -16,7 +16,7 @@ public class Hint extends Activity {
         int width = dm.widthPixels;
         int height = dm.heightPixels;
 
-        getWindow().setLayout((int)(width*.7), (int)(height*.5));
+        getWindow().setLayout((int)(width*.71), (int)(height*.5));
 
     }
 }

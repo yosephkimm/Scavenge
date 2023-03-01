@@ -29,14 +29,12 @@
     <fragment
         android:id="@+id/PlayHunt"
         android:name="com.example.scavenger.PlayHunt"
-        android:label="@string/play_hunt_label"
         tools:layout="@layout/fragment_play_hunt">
 
     </fragment>
     <activity
         android:id="@+id/Hint"
         android:name="com.example.scavenger.Hint"
-        android:label="@string/hint"
         tools:layout="@layout/hint_window"></activity>
 
 </navigation>

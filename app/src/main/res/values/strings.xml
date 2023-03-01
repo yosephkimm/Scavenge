@@ -18,4 +18,9 @@
     <string name="log_in2">Log In</string>
     <string name="create_account">Create Account</string>
     <string name="continue_as_guest">Continue as Guest</string>
+    <string name="quit">Quit</string>
+    <string name="confirm">Confirm</string>
+    <string name="hint_1">Hint 1</string>
+    <string name="hint_2">Hint 2</string>
+    <string name="hint_3">Hint 3</string>
 </resources>
