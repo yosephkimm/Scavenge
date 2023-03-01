@@ -25,7 +25,7 @@
             android:id="@+id/action_HomeFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
         <action
-            android:id="@+id/action_SecondFragment_to_PlayHunt"
+            android:id="@+id/action_HomeFragment_to_PlayHunt"
             app:destination="@id/PlayHunt" />
     </fragment>
     <fragment
@@ -35,4 +35,10 @@
         tools:layout="@layout/fragment_play_hunt">
 
     </fragment>
+    <activity
+        android:id="@+id/Hint"
+        android:name="com.example.scavenger.Hint"
+        android:label="@string/hint"
+        tools:layout="@layout/hint_window"></activity>
+
 </navigation>

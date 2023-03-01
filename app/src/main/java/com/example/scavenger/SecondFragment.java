@@ -37,11 +37,11 @@ public class SecondFragment extends Fragment {
                         .navigate(R.id.action_HomeFragment_to_FirstFragment);
             }
         });
-        binding.buttonHintLead.setOnClickListener(new View.OnClickListener() {
+        binding.buttonHuntLead.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 NavHostFragment.findNavController(SecondFragment.this)
-                        .navigate(R.id.action_SecondFragment_to_PlayHunt);
+                        .navigate(R.id.action_HomeFragment_to_PlayHunt);
             }
         });
     }

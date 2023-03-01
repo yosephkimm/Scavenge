@@ -1,5 +1,7 @@
 package com.example.scavenger;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,8 +33,8 @@ public class PlayHunt extends Fragment {
             binding.buttonHint.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mainActivity.startHint();
-
+                    startActivity(new Intent(getActivity(), Hint.class));
+                    ((Activity) getActivity()).overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 }
             });
         }

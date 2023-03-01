@@ -26,7 +26,7 @@
         app:layout_constraintTop_toBottomOf="@id/textview_second" />
 
     <Button
-        android:id="@+id/button_hint_lead"
+        android:id="@+id/button_hunt_lead"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/next"
