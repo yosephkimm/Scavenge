@@ -22,10 +22,12 @@
     <style name="Theme.Scavenger.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.Scavenger.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
     <style name="Theme.Scavenger.TransparentTheme">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowCloseOnTouchOutside">true</item>
     </style>
+
     <style name="Theme.Scavenger.WindowAnimationStyle">
         <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
         <item name="android:windowExitAnimation">@android:anim/fade_out</item>
