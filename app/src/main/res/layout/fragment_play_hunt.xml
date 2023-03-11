@@ -56,6 +56,28 @@
         app:layout_constraintVertical_bias="0.023" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/button_camera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_menu_camera"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.835"
+        app:layout_constraintStart_toEndOf="@+id/button_hint"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.955" />
+
+    <ImageView
+        android:id="@+id/capturedImage"
+        android:layout_width="250dp"
+        android:layout_height="320dp"
+        android:layout_gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/button_map"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

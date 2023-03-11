@@ -3,6 +3,7 @@ package com.example.scavenger;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,7 +52,17 @@ public class PlayHunt extends Fragment {
                 ((Activity) getActivity()).overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_in);
             }
         });
+        binding.buttonCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivityForResult(new Intent(MediaStore.ACTION_IMAGE_CAPTURE),100);
+            }
+        });
+
     }
+
+
+
 
     @Override
     public void onDestroyView() {
