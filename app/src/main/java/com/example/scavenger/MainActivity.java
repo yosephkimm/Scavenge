@@ -37,6 +37,16 @@ public class MainActivity extends AppCompatActivity {
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
+        // Take instance of Action Bar
+        // using getSupportActionBar and
+        // if it is not Null
+        // then call hide function
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        } else {
+            getSupportActionBar().show();
+        }
+
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
