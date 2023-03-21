@@ -3,18 +3,16 @@ package com.example.scavenger;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.view.View;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.scavenger.databinding.ActivityMainBinding;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,17 +34,11 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-
-        // Take instance of Action Bar
-        // using getSupportActionBar and
-        // if it is not Null
-        // then call hide function
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().hide();
-        } else {
-            getSupportActionBar().show();
-        }
-
+        //CollapsingToolbarLayout layout = findViewById(R.id.collapsing_toolbar_layout);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        /*
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -54,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+        */
 
     }
 
