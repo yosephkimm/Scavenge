@@ -8,37 +8,31 @@
     <fragment
         android:id="@+id/FirstFragment"
         android:name="com.example.scavenger.FirstFragment"
-        tools:layout="@layout/fragment_first">
-
-        <action
-            android:id="@+id/action_FirstFragment_to_HomeFragment"
-            app:destination="@id/HomeFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/HomeFragment"
-        android:name="com.example.scavenger.HomeFragment"
-        tools:layout="@layout/fragment_home">
-
-        <action
-            android:id="@+id/action_HomeFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
-        <action
-            android:id="@+id/action_HomeFragment_to_PlayHunt"
-            app:destination="@id/PlayHunt" />
-    </fragment>
+        tools:layout="@layout/fragment_first"/>
     <fragment
         android:id="@+id/PlayHunt"
         android:name="com.example.scavenger.PlayHunt"
         tools:layout="@layout/fragment_play_hunt">
-
         <action
-            android:id="@+id/action_PlayHunt_to_HomeFragment"
-            app:destination="@id/HomeFragment" />
+            android:id="@+id/action_PlayHunt_to_homeFragment2"
+            app:destination="@id/homeFragment2" />
     </fragment>
     <activity
         android:id="@+id/Hint"
         android:name="com.example.scavenger.Hint"
         android:label="@string/hint"
         tools:layout="@layout/hint_window"></activity>
+    <fragment
+        android:id="@+id/homeFragment2"
+        android:name="com.example.scavenger.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment2_to_PlayHunt"
+            app:destination="@id/PlayHunt" />
+        <action
+            android:id="@+id/action_homeFragment2_to_FirstFragment"
+            app:destination="@id/FirstFragment" />
+    </fragment>
 
 </navigation>

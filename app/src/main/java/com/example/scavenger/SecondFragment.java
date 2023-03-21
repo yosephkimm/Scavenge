@@ -30,6 +30,7 @@ public class SecondFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        /*
         binding.buttonSecond.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -37,6 +38,9 @@ public class SecondFragment extends Fragment {
                         .navigate(R.id.action_HomeFragment_to_FirstFragment);
             }
         });
+
+         */
+        /*
         binding.buttonHuntLead.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -44,6 +48,8 @@ public class SecondFragment extends Fragment {
                         .navigate(R.id.action_HomeFragment_to_PlayHunt);
             }
         });
+        
+         */
     }
 
     @Override
