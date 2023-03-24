@@ -3,14 +3,17 @@ package com.example.scavenger;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.google.android.gms.auth.api.identity.SignInCredential;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,6 +25,12 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.scavenger.databinding.ActivityMainBinding;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,14 +40,18 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+    // was in strings.xml: <string name="default_web_client_id">1010259840854-l51gpa8l14bgb8o3kutmbfrlc79f947f.apps.googleusercontent.com</string>
+
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
 
-    // https://www.youtube.com/watch?v=jEKjI0OzNNI
+    // Google Sign-In Instructions: https://www.youtube.com/watch?v=jEKjI0OzNNI
     private ImageView signin; // sign in image that acts as a button when pressed
     private TextView invalidlogin;
     private GoogleSignInOptions gso; // for sign in process
     private GoogleSignInClient gsc; // for sign in process
+    private FirebaseAuth mAuth; // Firebase Authentication
+    private FirebaseUser user;
 
     private NavController navController;
 
@@ -53,10 +66,15 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         getSupportActionBar().hide(); // hides the action bar at the top of the screen
 
+        // Initialize Firebase Auth
+        //FirebaseApp.initializeApp(this);
+        mAuth = FirebaseAuth.getInstance();
+
         invalidlogin = findViewById(R.id.invalidlogin);
         invalidlogin.setText("");
         signin= findViewById(R.id.signinimage);
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken("1010259840854-j4dsqm6hl4hg401hvhgm80t4rrbuk476.apps.googleusercontent.com")
                 .requestEmail()
                 .build();
         gsc = GoogleSignIn.getClient(this,gso);
@@ -94,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         GoogleSignInAccount account=GoogleSignIn.getLastSignedInAccount(this);
+        // if the email is not a valid wheaton.edu address, do not allow entry to the app
         if (!verifyEmail(account.getEmail())) {
             invalidlogin.setText("Error: invalid email");
             gsc.signOut();
@@ -103,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
             Task<GoogleSignInAccount> task=GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 task.getResult(ApiException.class);
+                firebaseAuth(account.getIdToken());
                 HomeActivity();
             } catch (ApiException e) {
                 Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
@@ -119,6 +139,31 @@ public class MainActivity extends AppCompatActivity {
             if (email.substring(atSign).equalsIgnoreCase("@my.wheaton.edu")) return true;
         }
         return false;
+    }
+
+    /*
+     * Got code from: https://firebase.google.com/docs/auth/android/google-signin#java_1
+     * authenticate account with firebase if there is a successful login
+     */
+    private void firebaseAuth(String idToken) {
+        if (idToken !=  null) {
+            // Got an ID token from Google. Use it to authenticate with Firebase.
+            AuthCredential firebaseCredential = GoogleAuthProvider.getCredential(idToken, null);
+            mAuth.signInWithCredential(firebaseCredential)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
+                                FirebaseUser fbuser = mAuth.getCurrentUser();
+                                user = fbuser;
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                user = null;
+                            }
+                        }
+                    });
+        }
     }
 
     /*
