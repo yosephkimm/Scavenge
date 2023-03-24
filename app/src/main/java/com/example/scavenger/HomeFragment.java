@@ -1,6 +1,7 @@
 package com.example.scavenger;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -40,8 +41,9 @@ public class HomeFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        getView().setBackgroundColor(getResources().getColor(R.color.turquoise));
 
-        binding.buttonHuntLead.setOnClickListener(new View.OnClickListener() {
+        binding.playbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 NavHostFragment.findNavController(HomeFragment.this)
@@ -64,10 +66,9 @@ public class HomeFragment extends Fragment {
         GoogleSignInAccount account=GoogleSignIn.getLastSignedInAccount(getActivity());
         // set name and email text located in login activity
         if (account != null) {
-            String Name = account.getDisplayName();
-            String Mail = account.getEmail();
-            binding.name.setText(Name);
-            binding.email.setText(Mail);
+            binding.name.setText("Welcome, " + account.getDisplayName());
+        } else {
+            binding.name.setText("Welcome, Guest");
         }
 
     }
