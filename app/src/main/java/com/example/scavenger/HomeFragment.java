@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -28,6 +29,8 @@ public class HomeFragment extends Fragment {
     private GoogleSignInOptions gso; // for sign in process
     private GoogleSignInClient gsc; // for sign in process
 
+    private boolean isGuest;
+
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
@@ -41,8 +44,10 @@ public class HomeFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getView().setBackgroundColor(getResources().getColor(R.color.turquoise));
+        getView().setBackgroundColor(getResources().getColor(R.color.avocado));
 
+
+        // set play button to go to playhunt fragment
         binding.playbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -51,10 +56,21 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        // set log out button to sign out and return to login screen
         binding.logout.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 SignOut();
+            }
+        });
+
+        binding.createhuntbutton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                if (isGuest) {
+                    DialogFragment newFragment = new LoginDialogueFragment();
+                    newFragment.show(getFragmentManager(), "game");
+                }
             }
         });
 
@@ -67,8 +83,10 @@ public class HomeFragment extends Fragment {
         // set name and email text located in login activity
         if (account != null) {
             binding.name.setText("Welcome, " + account.getDisplayName());
+            isGuest = false;
         } else {
             binding.name.setText("Welcome, Guest");
+            isGuest = true;
         }
 
     }
@@ -84,7 +102,6 @@ public class HomeFragment extends Fragment {
             }
         });
     }
-
 
     @Override
     public void onDestroyView() {

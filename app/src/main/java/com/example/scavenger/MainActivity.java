@@ -80,8 +80,6 @@ public class MainActivity extends AppCompatActivity {
 
 }
 
-
-
     /*
      * Get the Google sign in intent and invoke the onActivityResult method
      */

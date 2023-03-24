@@ -6,48 +6,48 @@
     android:layout_height="match_parent"
     tools:context=".HomeFragment">
 
+
     <ImageView
         android:id="@+id/homeblock"
         android:layout_width="339dp"
         android:layout_height="220dp"
         android:layout_centerInParent="true"
         android:layout_marginStart="36dp"
-        android:layout_marginTop="96dp"
+        android:layout_marginTop="80dp"
         android:src="@drawable/homeblock"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/createhuntbutton"
-        android:layout_width="223dp"
-        android:layout_height="163dp"
+        android:id="@+id/playbutton"
+        android:layout_width="230dp"
+        android:layout_height="94dp"
         android:layout_centerInParent="true"
-        android:layout_marginStart="92dp"
-        android:layout_marginTop="404dp"
-        android:src="@drawable/createhuntbutton"
+        android:layout_marginStart="88dp"
+        android:layout_marginTop="308dp"
+        android:src="@drawable/playbutton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <ImageView
         android:id="@+id/leaderboardbutton"
-        android:layout_width="223dp"
-        android:layout_height="163dp"
+        android:layout_width="230dp"
+        android:layout_height="94dp"
         android:layout_centerInParent="true"
-        android:layout_marginStart="92dp"
-        android:layout_marginTop="508dp"
+        android:layout_marginStart="88dp"
+        android:layout_marginTop="528dp"
         android:src="@drawable/leaderboardbutton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/playbutton"
-        android:layout_width="223dp"
-        android:layout_height="163dp"
+        android:id="@+id/createhuntbutton"
+        android:layout_width="230dp"
+        android:layout_height="94dp"
         android:layout_centerInParent="true"
-        android:layout_marginStart="92dp"
-        android:layout_marginTop="296dp"
-        android:src="@drawable/playbutton"
+        android:layout_marginStart="88dp"
+        android:layout_marginTop="416dp"
+        android:src="@drawable/createhuntbutton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
