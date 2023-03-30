@@ -41,7 +41,7 @@ public class PlayHunt extends Fragment {
             @Override
             public void onClick(View view) {
                 NavHostFragment.findNavController(PlayHunt.this)
-                        .navigate(R.id.action_PlayHunt_to_HomeFragment);
+                        .navigate(R.id.action_PlayHunt_to_homeFragment2);
             }
         });
         binding.buttonMap.setOnClickListener(new View.OnClickListener() {
