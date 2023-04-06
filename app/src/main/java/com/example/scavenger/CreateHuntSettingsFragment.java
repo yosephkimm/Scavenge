@@ -70,9 +70,11 @@ public class CreateHuntSettingsFragment extends Fragment {
         });
     }
 
+
     /*
      * Get an arraylist of all the created hunts from the database
      */
+    /*
     private ArrayList<Hunt> getHunts() {
         ArrayList<Hunt> hunts = new ArrayList<Hunt>();
         firestoreDatabase.collection("Courses").get()
@@ -99,6 +101,9 @@ public class CreateHuntSettingsFragment extends Fragment {
         return hunts;
     }
 
+     */
+
+
 
     /*
      * Check if the proposed name of the hunt already exists
@@ -106,7 +111,7 @@ public class CreateHuntSettingsFragment extends Fragment {
      */
     private boolean verifyName(String name) {
         // if the name of the proposed hunt is already a hunt
-        for (Hunt hunt : getHunts()) {
+        for (Hunt hunt : Hunt.getHunts()) {
             if (hunt.getName().equalsIgnoreCase(name)) {
                 return true;
             }
