@@ -16,8 +16,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.66" />
+        app:layout_constraintTop_toBottomOf="@+id/captured_image"
+        app:layout_constraintVertical_bias="0.147" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/button_hint"
@@ -68,14 +68,16 @@
         app:layout_constraintVertical_bias="0.955" />
 
     <ImageView
-        android:id="@+id/capturedImage"
+        android:id="@+id/captured_image"
         android:layout_width="250dp"
         android:layout_height="320dp"
         android:layout_gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.384" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/button_map"
@@ -88,6 +90,25 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.955"
         app:srcCompat="@android:drawable/ic_dialog_map" />
+
+    <TextView
+        android:id="@+id/test_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        app:layout_constraintBottom_toTopOf="@+id/button_confirm"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textview_des" />
+
+    <TextView
+        android:id="@+id/textresult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/button_map"
+        app:layout_constraintEnd_toStartOf="@+id/button_confirm"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

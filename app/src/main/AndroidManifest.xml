@@ -34,5 +34,4 @@
             android:name=".Mapping"
             android:theme="@style/Theme.Scavenger.TransparentTheme" />
     </application>
-
 </manifest>
