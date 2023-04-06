@@ -33,6 +33,13 @@
         <action
             android:id="@+id/action_homeFragment2_to_FirstFragment"
             app:destination="@id/FirstFragment" />
+        <action
+            android:id="@+id/action_homeFragment2_to_createHuntSettingsFragment"
+            app:destination="@id/createHuntSettingsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/createHuntSettingsFragment"
+        android:name="com.example.scavenger.CreateHuntSettingsFragment"
+        android:label="CreateHuntSettingsFragment" />
 
 </navigation>
