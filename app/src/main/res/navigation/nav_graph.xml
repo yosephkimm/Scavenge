@@ -39,12 +39,29 @@
             android:id="@+id/action_homeFragment2_to_FirstFragment"
             app:destination="@id/FirstFragment" />
         <action
-            android:id="@+id/action_homeFragment2_to_createHuntSettingsFragment"
-            app:destination="@id/createHuntSettingsFragment" />
+            android:id="@+id/action_homeFragment2_to_creatorHomePageFragment"
+            app:destination="@id/creatorHomePageFragment" />
     </fragment>
     <fragment
         android:id="@+id/createHuntSettingsFragment"
         android:name="com.example.scavenger.CreateHuntSettingsFragment"
         android:label="CreateHuntSettingsFragment" />
+    <fragment
+        android:id="@+id/creatorHomePageFragment"
+        android:name="com.example.scavenger.CreatorHomePageFragment"
+        android:label="fragment_creator_home_page"
+        tools:layout="@layout/fragment_creator_home_page" >
+        <action
+            android:id="@+id/action_creatorHomePageFragment_to_createHuntSettingsFragment"
+            app:destination="@id/createHuntSettingsFragment" />
+        <action
+            android:id="@+id/action_creatorHomePageFragment_to_editHuntFragment"
+            app:destination="@id/editHuntFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editHuntFragment"
+        android:name="com.example.scavenger.EditHuntFragment"
+        android:label="fragment_edit_hunt"
+        tools:layout="@layout/fragment_edit_hunt" />
 
 </navigation>

@@ -51,6 +51,14 @@ public class PlayHunt extends Fragment {
                 ((Activity) getActivity()).overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_in);
             }
         });
+
+        binding.buttonLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), MapDemo.class));
+                ((Activity) getActivity()).overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_in);
+            }
+        });
     }
 
     @Override

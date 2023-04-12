@@ -12,8 +12,10 @@ import android.widget.Toast;
 
 import com.example.scavenger.databinding.FragmentCreateHuntSettingsBinding;
 import com.example.scavenger.databinding.FragmentHomeBinding;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
@@ -65,56 +67,39 @@ public class CreateHuntSettingsFragment extends Fragment {
                 String name = String.valueOf(binding.editTextHuntName.getText());
                 String desc = String.valueOf(binding.editTextHuntDesc.getText());
 
-                if (verifyName(name)) createHunt(name, desc);
+                createIfNameExists(name, desc);
             }
         });
     }
 
-    /*
-     * Get an arraylist of all the created hunts from the database
-     */
-    private ArrayList<Hunt> getHunts() {
-        ArrayList<Hunt> hunts = new ArrayList<Hunt>();
-        firestoreDatabase.collection("Courses").get()
+    private void createIfNameExists(String name, String desc) {
+
+        // iterate through the database Hunts and see if the name exists already
+        // create the hunt and add it to the database if it is a unique name
+        // do nothing if the name already exists
+        firestoreDatabase.collection("Hunts").get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         if (!queryDocumentSnapshots.isEmpty()) {
                             List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                            boolean nameExists = false;
                             for (DocumentSnapshot d : list) {
-                                Hunt hunt = d.toObject(Hunt.class);
-                                hunts.add(hunt);
+                                if (d.toObject(Hunt.class).getName().equalsIgnoreCase(name)) nameExists = true;
                             }
+                            if (!nameExists) createHunt(name, desc);
+                            else displayError();
                         } else {
-                            // if the snapshot is empty
+                            System.out.println("Hunts database collection is empty!");
                         }
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // if we do not get any data
                     }
                 });
 
-        return hunts;
     }
 
-
-    /*
-     * Check if the proposed name of the hunt already exists
-     * return true if it already exists, false otherwise
-     */
-    private boolean verifyName(String name) {
-        // if the name of the proposed hunt is already a hunt
-        for (Hunt hunt : getHunts()) {
-            if (hunt.getName().equalsIgnoreCase(name)) {
-                return true;
-            }
-        }
-        return false;
+    private void displayError() {
 
     }
-
 
     /*
      * Create a scavenger hunt object and add it to the database
@@ -122,19 +107,13 @@ public class CreateHuntSettingsFragment extends Fragment {
     private void createHunt(String name, String description) {
         // creating a collection reference for our Firebase Firestore database.
         CollectionReference dbHunts = firestoreDatabase.collection("Hunts");
-
         // create a hunt object
-        Hunt hunt = new Hunt(name, description);
+        Hunt hunt = new Hunt(name, description, FirebaseAuth.getInstance().getCurrentUser());
 
         // below method is used to add data to Firebase Firestore.
         dbHunts.add(hunt).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
             public void onSuccess(DocumentReference documentReference) {
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
 
             }
         });
