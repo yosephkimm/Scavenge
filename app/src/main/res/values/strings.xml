@@ -41,4 +41,7 @@
     <string name="editor_page">Editor Page</string>
     <string name="newb">new hunt</string>
     <string name="title_activity_create_hunt_list">CreateHuntListActivity</string>
+    <string name="title_activity_leaderboard">LeaderboardActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
 </resources>

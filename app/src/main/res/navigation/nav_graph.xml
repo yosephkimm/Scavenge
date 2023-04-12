@@ -22,6 +22,11 @@
         android:name="com.example.scavenger.Hint"
         android:label="@string/hint"
         tools:layout="@layout/hint_window"></activity>
+    <activity
+        android:id="@+id/Leaderboard"
+        android:name="com.example.scavenger.LeaderboardActivity"
+        android:label="Leaderboard"
+        tools:layout="@layout/activity_leaderboard"></activity>
     <fragment
         android:id="@+id/homeFragment2"
         android:name="com.example.scavenger.HomeFragment"
