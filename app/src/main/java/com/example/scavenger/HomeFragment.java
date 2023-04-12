@@ -1,5 +1,6 @@
 package com.example.scavenger;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -36,10 +37,8 @@ public class HomeFragment extends Fragment {
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
-
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         return binding.getRoot();
-
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
@@ -53,6 +52,14 @@ public class HomeFragment extends Fragment {
             public void onClick(View view) {
                 NavHostFragment.findNavController(HomeFragment.this)
                         .navigate(R.id.action_homeFragment2_to_PlayHunt);
+            }
+        });
+
+        binding.leaderboardbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), LeaderboardActivity.class));
+                ((Activity) getActivity()).overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_in);
             }
         });
 
@@ -70,6 +77,9 @@ public class HomeFragment extends Fragment {
                 if (isGuest) {
                     DialogFragment newFragment = new LoginDialogueFragment();
                     newFragment.show(getFragmentManager(), "game");
+                } else {
+                    NavHostFragment.findNavController(HomeFragment.this)
+                            .navigate(R.id.action_homeFragment2_to_creatorHomePageFragment);
                 }
             }
         });
@@ -80,7 +90,7 @@ public class HomeFragment extends Fragment {
         gsc = GoogleSignIn.getClient(getActivity(),gso);
 
         GoogleSignInAccount account=GoogleSignIn.getLastSignedInAccount(getActivity());
-        // set name and email text located in login activity
+        // set display name text in home page and set if user is guest
         if (account != null) {
             binding.name.setText("Welcome, " + account.getDisplayName());
             isGuest = false;

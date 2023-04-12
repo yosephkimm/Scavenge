@@ -1,12 +1,6 @@
 package com.example.scavenger;
 
-import static android.content.ContentValues.TAG;
-
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.os.Bundle;
 
 import com.google.android.gms.auth.api.identity.SignInCredential;
@@ -23,8 +17,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 
 import androidx.navigation.NavController;
@@ -81,10 +73,8 @@ public class MainActivity extends AppCompatActivity {
         invalidlogin = findViewById(R.id.invalidlogin);
         invalidlogin.setText("");
         signin= findViewById(R.id.signinimage);
-
-
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken("1010259840854-l51gpa8l14bgb8o3kutmbfrlc79f947f.apps.googleusercontent.com")
+                .requestIdToken("1010259840854-j4dsqm6hl4hg401hvhgm80t4rrbuk476.apps.googleusercontent.com")
                 .requestEmail()
                 .build();
         gsc = GoogleSignIn.getClient(this,gso);
@@ -97,8 +87,6 @@ public class MainActivity extends AppCompatActivity {
                 SignIn();
             }
         });
-
-
         // when the continue as guest button is pressed, sign in the user as a guest
         findViewById(R.id.asguestimage).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,24 +111,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == 100) {
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+        GoogleSignInAccount account=GoogleSignIn.getLastSignedInAccount(this);
+        // if the email is not a valid wheaton.edu address, do not allow entry to the app
+        if (!verifyEmail(account.getEmail())) {
+            invalidlogin.setText("Error: invalid email");
+            gsc.signOut();
+            return;
+        }
+        if (requestCode==100) {
+            Task<GoogleSignInAccount> task=GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-                // if the email is not a valid wheaton.edu address, do not allow entry to the app
-                if (!verifyEmail(account.getEmail())) {
-                    invalidlogin.setText("Error: invalid email");
-                    gsc.signOut();
-                    return;
-                }
+                task.getResult(ApiException.class);
                 firebaseAuth(account.getIdToken());
                 HomeActivity();
             } catch (ApiException e) {
-                // Log the error code and error message to the console for debugging
-                Log.e("Google Sign-In", "Error code: " + e.getStatusCode() + ", Error message: " + e.getMessage());
-                // Display the actual error message received from ApiException in the Toast
-                Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -163,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
     private void firebaseAuth(String idToken) {
         if (idToken !=  null) {
             // Got an ID token from Google. Use it to authenticate with Firebase.
-            AuthCredential firebaseCredential = GoogleAuthProvider.getCredential(idToken, "some_access_token");
+            AuthCredential firebaseCredential = GoogleAuthProvider.getCredential(idToken, null);
             mAuth.signInWithCredential(firebaseCredential)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
