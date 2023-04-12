@@ -70,7 +70,7 @@ public class HomeFragment extends Fragment {
                     newFragment.show(getFragmentManager(), "game");
                 } else {
                     NavHostFragment.findNavController(HomeFragment.this)
-                            .navigate(R.id.action_homeFragment2_to_createHuntSettingsFragment);
+                            .navigate(R.id.action_homeFragment2_to_creatorHomePageFragment);
                 }
             }
         });
