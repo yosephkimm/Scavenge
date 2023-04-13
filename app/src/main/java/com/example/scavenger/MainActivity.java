@@ -40,10 +40,15 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+    // was in strings.xml: <string name="default_web_client_id">1010259840854-l51gpa8l14bgb8o3kutmbfrlc79f947f.apps.googleusercontent.com</string>
+
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
 
+    // Google Sign-In Instructions: https://www.youtube.com/watch?v=jEKjI0OzNNI
+    private ImageView signin; // sign in image that acts as a button when pressed
     private TextView invalidlogin;
+    private GoogleSignInOptions gso; // for sign in process
     private GoogleSignInClient gsc; // for sign in process
     private FirebaseAuth mAuth; // Firebase Authentication
     private FirebaseUser user;
@@ -61,20 +66,18 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         getSupportActionBar().hide(); // hides the action bar at the top of the screen
 
-        // Initialize Firebase Authentication
+        // Initialize Firebase Auth
+        //FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
 
         invalidlogin = findViewById(R.id.invalidlogin);
         invalidlogin.setText("");
-        // Google Sign-In Instructions: https://www.youtube.com/watch?v=jEKjI0OzNNI
-        // sign in image that acts as a button when pressed
-        ImageView signin = findViewById(R.id.signinimage);
-        // for sign in process
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        signin= findViewById(R.id.signinimage);
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken("1010259840854-j4dsqm6hl4hg401hvhgm80t4rrbuk476.apps.googleusercontent.com")
                 .requestEmail()
                 .build();
-        gsc = GoogleSignIn.getClient(this, gso);
+        gsc = GoogleSignIn.getClient(this,gso);
         gsc.signOut();
 
         // when the sign in button is pressed, invoke the Google sign in process
@@ -108,18 +111,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        GoogleSignInAccount account=GoogleSignIn.getLastSignedInAccount(this);
+        // if the email is not a valid wheaton.edu address, do not allow entry to the app
+        if (!verifyEmail(account.getEmail())) {
+            invalidlogin.setText("Error: invalid email");
+            gsc.signOut();
+            return;
+        }
         if (requestCode==100) {
             Task<GoogleSignInAccount> task=GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
-
-                GoogleSignInAccount account=task.getResult(ApiException.class);
-                // if the email is not a valid wheaton.edu address, do not allow entry to the app
-                if (!verifyEmail(account.getEmail())) {
-                    invalidlogin.setText("Error: invalid email");
-                    gsc.signOut();
-                    return;
-                }
+                task.getResult(ApiException.class);
                 firebaseAuth(account.getIdToken());
                 HomeActivity();
             } catch (ApiException e) {
@@ -168,6 +170,13 @@ public class MainActivity extends AppCompatActivity {
      * Ends this activity and begins the LoginActivity (home page of the app)
      */
     private void HomeActivity() {
+        //navController.navigate(R.id.action_FirstFragment_to_HomeFragment);
+        /*
+        finish();
+        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+        startActivity(intent);
+
+         */
         navController.navigate(R.id.homeFragment2);
     }
 
