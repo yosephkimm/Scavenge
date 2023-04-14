@@ -47,6 +47,13 @@ public class HuntGVAdapter extends ArrayAdapter<Hunt> {
             }
         });
 
+        listitemView.findViewById(R.id.deletehuntbutton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteHunt(hunt);
+            }
+        });
+
         huntnameTV.setText(hunt.getName());
         huntdescTV.setText(hunt.getDesc());
         return listitemView;
@@ -56,6 +63,10 @@ public class HuntGVAdapter extends ArrayAdapter<Hunt> {
         EditHuntFragment.hunt = hunt;
         NavHostFragment.findNavController(currentFragment)
                 .navigate(R.id.action_creatorHomePageFragment_to_editHuntFragment);
+    }
+
+    private void deleteHunt(Hunt hunt) {
+
     }
 
 }
