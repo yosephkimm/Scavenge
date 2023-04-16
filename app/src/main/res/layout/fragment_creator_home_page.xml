@@ -6,22 +6,16 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-
-    <Button
-        android:id="@+id/newhunt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
+    <ImageView
+        android:id="@+id/newhuntimage"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="296dp"
         android:layout_marginTop="64dp"
-        android:layout_marginEnd="35dp"
-        android:layout_marginBottom="400dp"
-        android:text="@string/newb"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.324"
+        android:src="@drawable/newhuntimage"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.214" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView2"
@@ -42,11 +36,11 @@
 
     <GridView
         android:id="@+id/huntGV"
-        android:layout_width="250dp"
+        android:layout_width="match_parent"
         android:layout_height="400dp"
-        android:layout_marginStart="40dp"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="30dp"
-        android:layout_marginEnd="40dp"
+        android:layout_marginEnd="5dp"
         android:layout_marginBottom="4dp"
         android:numColumns="1"
         android:verticalSpacing="5dp"
@@ -54,7 +48,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.483"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/newhunt"
         app:layout_constraintVertical_bias="0.0" />
 
 

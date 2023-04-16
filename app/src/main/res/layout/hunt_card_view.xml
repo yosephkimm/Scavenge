@@ -29,12 +29,28 @@ https://www.geeksforgeeks.org/gridview-in-android-with-example/# -->
             android:text="@string/app_name"
             android:textAlignment="center" />
 
-        <Button
-            android:id="@+id/edithuntbutton"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:text="Edit" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/edithuntbutton"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:text="Edit"
+                android:layout_marginRight="5dp"/>
+
+            <Button
+                android:id="@+id/deletehuntbutton"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:text="Delete"
+                android:layout_marginLeft="5dp"/>
+
+        </LinearLayout>
+
 
     </LinearLayout>
 

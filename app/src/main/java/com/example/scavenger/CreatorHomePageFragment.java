@@ -43,7 +43,7 @@ public class CreatorHomePageFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         getView().setBackgroundColor(getResources().getColor(R.color.avocado));
 
-        binding.newhunt.setOnClickListener(new View.OnClickListener() {
+        binding.newhuntimage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 NavHostFragment.findNavController(CreatorHomePageFragment.this)
