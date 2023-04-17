@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,12 +68,12 @@ public class CreateHuntSettingsFragment extends Fragment {
                 String name = String.valueOf(binding.editTextHuntName.getText());
                 String desc = String.valueOf(binding.editTextHuntDesc.getText());
 
-                createIfNameExists(name, desc);
+                createIfValidName(name, desc);
             }
         });
     }
 
-    private void createIfNameExists(String name, String desc) {
+    private void createIfValidName(String name, String desc) {
 
         // iterate through the database Hunts and see if the name exists already
         // create the hunt and add it to the database if it is a unique name
@@ -87,11 +88,12 @@ public class CreateHuntSettingsFragment extends Fragment {
                             for (DocumentSnapshot d : list) {
                                 if (d.toObject(Hunt.class).getName().equalsIgnoreCase(name)) nameExists = true;
                             }
-                            if (!nameExists) createHunt(name, desc);
-                            else displayError();
-                        } else {
-                            System.out.println("Hunts database collection is empty!");
+                            if (nameExists) {
+                                displayError();
+                                return;
+                            }
                         }
+                        createHunt(name,desc);
                     }
                 });
 
@@ -108,14 +110,20 @@ public class CreateHuntSettingsFragment extends Fragment {
         // creating a collection reference for our Firebase Firestore database.
         CollectionReference dbHunts = firestoreDatabase.collection("Hunts");
         // create a hunt object
-        Hunt hunt = new Hunt(name, description, FirebaseAuth.getInstance().getCurrentUser());
+        Hunt hunt = new Hunt(name, description, FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
         // below method is used to add data to Firebase Firestore.
-        dbHunts.add(hunt).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-            @Override
-            public void onSuccess(DocumentReference documentReference) {
-
-            }
+        dbHunts.document(name).set(hunt)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        // navigate to the hunt editor page
+                        EditHuntFragment.hunt = hunt;
+                        NavHostFragment.findNavController(CreateHuntSettingsFragment.this)
+                                .navigate(R.id.editHuntFragment);
+                    }
         });
+
+
     }
 }

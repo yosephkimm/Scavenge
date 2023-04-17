@@ -13,6 +13,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
 
 public class HuntGVAdapter extends ArrayAdapter<Hunt> {
@@ -59,14 +64,27 @@ public class HuntGVAdapter extends ArrayAdapter<Hunt> {
         return listitemView;
     }
 
+    /**
+     * Navigate to the EditHuntFragment
+     * @post EditHuntFragment.hunt = hunt
+     * @param hunt the Hunt that is being edited
+     */
     private void editHunt(Hunt hunt) {
         EditHuntFragment.hunt = hunt;
         NavHostFragment.findNavController(currentFragment)
                 .navigate(R.id.action_creatorHomePageFragment_to_editHuntFragment);
     }
 
+    /**
+     * Delete a hunt from the Firestore database and update the list of hunts
+     * @param hunt The Hunt to delete
+     */
     private void deleteHunt(Hunt hunt) {
-
+        FirebaseFirestore firestoreDatabase = FirebaseFirestore.getInstance();
+        CollectionReference dbHunts = firestoreDatabase.collection("Hunts");
+        dbHunts.document(hunt.getName()).delete();
+        NavHostFragment.findNavController(currentFragment)
+                .navigate(R.id.creatorHomePageFragment);
     }
 
 }

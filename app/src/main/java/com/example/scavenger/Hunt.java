@@ -1,19 +1,5 @@
 package com.example.scavenger;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * A Hunt is played or created by users. It holds information about
  * checkpoints in the hunt that determine the steps a player must
@@ -34,13 +20,13 @@ public class Hunt {
     /**
      * The user as a FirebaseUser object that created this Hunt
      */
-    private FirebaseUser user;
+    private String creator;
 
     /**
      * An arraylist of all of the checkpoints of this hunt
      * @invariant checkpoints.size() <= maxCheckpoints
      */
-    private ArrayList<Checkpoint> checkpoints;
+    //private ArrayList<Checkpoint> checkpoints;
 
     /**
      * The maximum number of checkpoints that Hunts are allowed to have
@@ -48,10 +34,10 @@ public class Hunt {
      */
     private final int maxCheckpoints = 10;
 
-    public Hunt(String name, String description, FirebaseUser user) {
+    public Hunt(String name, String description, String creator) {
         this.name = name;
         this.desc = description;
-        this.user = user;
+        this.creator = creator;
     }
 
     public Hunt() {
@@ -91,24 +77,28 @@ public class Hunt {
         return this.desc;
     }
 
+    public String getCreator() { return this.creator; }
+
     /**
      * Add a new checkpoint to this Hunt
      * @param cp the checkpoint to add
      * @return true if successfully added, false if checkpoints is at max capacity
      */
-    public boolean addCheckpoint(Checkpoint cp) {
+    /*public boolean addCheckpoint(Checkpoint cp) {
         if (checkpoints.size() >= maxCheckpoints) return false;
         checkpoints.add(cp);
         return true;
-    }
+    }*/
 
     /**
      * Get the arraylist of all checkpoints of this Hunt
      * @return the checkpoints as an arraylist
      */
-    public ArrayList<Checkpoint> getCheckpoints() {
+    /*public ArrayList<Checkpoint> getCheckpoints() {
         return this.checkpoints;
     }
+    */
+
 
 
 }
