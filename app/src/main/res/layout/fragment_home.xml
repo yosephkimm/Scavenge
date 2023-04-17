@@ -23,9 +23,9 @@
         android:layout_width="230dp"
         android:layout_height="94dp"
         android:layout_centerInParent="true"
-        android:layout_marginStart="88dp"
         android:layout_marginTop="308dp"
         android:src="@drawable/playbutton"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

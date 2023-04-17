@@ -150,20 +150,20 @@ public class PlayHunt extends Fragment {
                     // Handle any errors that occurred while uploading the image
                 }
             });
+
             StorageReference imageTest = storageRef.child("images/test_run.jpg");
+            imageRef.getDownloadUrl().toString();
             imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {
                     String one = uri.toString();
                     // Handle the success, one contains the download URL of image1.jpg
-                    // You can use this URL to display the image or perform other operations
 
-                    Log.d("TAG", "one: " + one);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
-                    // Handle the failure, e.g. show an error message
+                    // Handle the failure
                 }
             });
             String one = "https://firebasestorage.googleapis.com/v0/b/scavenger-6aa7e.appspot.com/o/images%2Fimage.jpg?alt=media&token=8c077b56-2db4-4e37-bbdc-389888a17573";
@@ -173,9 +173,7 @@ public class PlayHunt extends Fragment {
                 public void onSuccess(Uri uri) {
                     String two = uri.toString();
                     // Handle the success, two contains the download URL of image2.jpg
-                    // You can use this URL to display the image or perform other operations
 
-                    Log.d("TAG", "two: " + two);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -202,6 +200,7 @@ public class PlayHunt extends Fragment {
         byte[] byteArray = byteArrayOutputStream.toByteArray();
         return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
+
 
     private class CompareImagesTask extends AsyncTask<String, Void, String> {
 
