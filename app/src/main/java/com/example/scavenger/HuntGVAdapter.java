@@ -45,6 +45,7 @@ public class HuntGVAdapter extends ArrayAdapter<Hunt> {
         Hunt hunt = getItem(position);
         TextView huntnameTV = listitemView.findViewById(R.id.huntname);
         TextView huntdescTV = listitemView.findViewById(R.id.huntdesc);
+        ImageView cardbg = listitemView.findViewById(R.id.huntcardbg);
         listitemView.findViewById(R.id.edithuntbutton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -61,6 +62,9 @@ public class HuntGVAdapter extends ArrayAdapter<Hunt> {
 
         huntnameTV.setText(hunt.getName());
         huntdescTV.setText(hunt.getDesc());
+        if (hunt.getbgcolor().equalsIgnoreCase("Blue")) cardbg.setImageResource(R.drawable.bluebg);
+        else if (hunt.getbgcolor().equalsIgnoreCase("Orange")) cardbg.setImageResource(R.drawable.orangebg);
+        else cardbg.setImageResource(R.drawable.redbg);
         return listitemView;
     }
 

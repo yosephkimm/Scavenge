@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         invalidlogin.setText("");
         signin= findViewById(R.id.signinimage);
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken("1010259840854-j4dsqm6hl4hg401hvhgm80t4rrbuk476.apps.googleusercontent.com  ")
+                //.requestIdToken("1010259840854-j4dsqm6hl4hg401hvhgm80t4rrbuk476.apps.googleusercontent.com  ")
                 .requestEmail()
                 .build();
         gsc = GoogleSignIn.getClient(this,gso);

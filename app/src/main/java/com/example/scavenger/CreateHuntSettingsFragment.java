@@ -9,6 +9,8 @@ import androidx.navigation.fragment.NavHostFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.scavenger.databinding.FragmentCreateHuntSettingsBinding;
@@ -60,6 +62,12 @@ public class CreateHuntSettingsFragment extends Fragment {
         firebaseDatabase = FirebaseDatabase.getInstance();
         firestoreDatabase = FirebaseFirestore.getInstance();
 
+        // set the dropdown to have Red, Blue, and Orange as options for the card view background colors
+        Spinner dropdown = getView().findViewById(R.id.colorspinner);
+        String[] items = new String[]{"Red", "Blue", "Orange"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, items);
+        dropdown.setAdapter(adapter);
+
 
         // when the done button is clicked, get the name and description and create a new hunt
         binding.doneButton.setOnClickListener(new View.OnClickListener() {
@@ -67,13 +75,14 @@ public class CreateHuntSettingsFragment extends Fragment {
             public void onClick(View view) {
                 String name = String.valueOf(binding.editTextHuntName.getText());
                 String desc = String.valueOf(binding.editTextHuntDesc.getText());
+                String bgcolor = String.valueOf(binding.colorspinner.getSelectedItem());
 
-                createIfValidName(name, desc);
+                createIfValidName(name, desc, bgcolor);
             }
         });
     }
 
-    private void createIfValidName(String name, String desc) {
+    private void createIfValidName(String name, String desc, String bgcolor) {
 
         // iterate through the database Hunts and see if the name exists already
         // create the hunt and add it to the database if it is a unique name
@@ -93,7 +102,7 @@ public class CreateHuntSettingsFragment extends Fragment {
                                 return;
                             }
                         }
-                        createHunt(name,desc);
+                        createHunt(name,desc,bgcolor);
                     }
                 });
 
@@ -106,11 +115,11 @@ public class CreateHuntSettingsFragment extends Fragment {
     /*
      * Create a scavenger hunt object and add it to the database
      */
-    private void createHunt(String name, String description) {
+    private void createHunt(String name, String description, String bgcolor) {
         // creating a collection reference for our Firebase Firestore database.
         CollectionReference dbHunts = firestoreDatabase.collection("Hunts");
         // create a hunt object
-        Hunt hunt = new Hunt(name, description, FirebaseAuth.getInstance().getCurrentUser().getEmail());
+        Hunt hunt = new Hunt(name, description, FirebaseAuth.getInstance().getCurrentUser().getEmail(), bgcolor);
 
         // below method is used to add data to Firebase Firestore.
         dbHunts.document(name).set(hunt)

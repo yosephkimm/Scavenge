@@ -1,74 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeFragment">
+    android:orientation="vertical"
+    tools:context=".FirstFragment"
+    tools:ignore="HardcodedText">
 
-
-    <ImageView
-        android:id="@+id/homeblock"
-        android:layout_width="339dp"
-        android:layout_height="220dp"
-        android:layout_centerInParent="true"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="80dp"
-        android:src="@drawable/homeblock"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/playbutton"
-        android:layout_width="230dp"
-        android:layout_height="94dp"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="308dp"
-        android:src="@drawable/playbutton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/leaderboardbutton"
-        android:layout_width="230dp"
-        android:layout_height="94dp"
-        android:layout_centerInParent="true"
-        android:layout_marginStart="88dp"
-        android:layout_marginTop="528dp"
-        android:src="@drawable/leaderboardbutton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/createhuntbutton"
-        android:layout_width="230dp"
-        android:layout_height="94dp"
-        android:layout_centerInParent="true"
-        android:layout_marginStart="88dp"
-        android:layout_marginTop="416dp"
-        android:src="@drawable/createhuntbutton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/treasuremapbg"
+            android:scaleType="centerCrop" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Log Out"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="Log Out"/>
 
     <TextView
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginStart="72dp"
-        android:layout_marginTop="152dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="15dp"
         android:text="name"
-        android:textSize="18dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="18dp"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="50dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/playbutton"
+            android:layout_width="130dp"
+            android:layout_height="60dp"
+            android:src="@drawable/playbutton" />
+
+        <ImageView
+            android:id="@+id/createhuntbutton"
+            android:layout_width="130dp"
+            android:layout_height="60dp"
+            android:src="@drawable/createhuntbutton"/>
+
+        <ImageView
+            android:id="@+id/leaderboardbutton"
+            android:layout_width="130dp"
+            android:layout_height="60dp"
+            android:src="@drawable/leaderboardbutton"/>
+    </LinearLayout>
+
+</FrameLayout>

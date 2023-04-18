@@ -1,5 +1,7 @@
 package com.example.scavenger;
 
+import java.util.ArrayList;
+
 /**
  * A Hunt is played or created by users. It holds information about
  * checkpoints in the hunt that determine the steps a player must
@@ -26,7 +28,9 @@ public class Hunt {
      * An arraylist of all of the checkpoints of this hunt
      * @invariant checkpoints.size() <= maxCheckpoints
      */
-    //private ArrayList<Checkpoint> checkpoints;
+    private ArrayList<Checkpoint> checkpoints;
+
+    private String bgcolor;
 
     /**
      * The maximum number of checkpoints that Hunts are allowed to have
@@ -34,10 +38,12 @@ public class Hunt {
      */
     private final int maxCheckpoints = 10;
 
-    public Hunt(String name, String description, String creator) {
+    public Hunt(String name, String description, String creator, String bgcolor) {
         this.name = name;
         this.desc = description;
         this.creator = creator;
+        this.bgcolor = bgcolor;
+        this.checkpoints = new ArrayList<Checkpoint>();
     }
 
     public Hunt() {
@@ -79,26 +85,27 @@ public class Hunt {
 
     public String getCreator() { return this.creator; }
 
+    public String getbgcolor() {return this.bgcolor;}
+
+    public void setbgcolor(String bgcolor) {this.bgcolor = bgcolor;}
+
     /**
      * Add a new checkpoint to this Hunt
      * @param cp the checkpoint to add
      * @return true if successfully added, false if checkpoints is at max capacity
      */
-    /*public boolean addCheckpoint(Checkpoint cp) {
+    public boolean addCheckpoint(Checkpoint cp) {
         if (checkpoints.size() >= maxCheckpoints) return false;
         checkpoints.add(cp);
         return true;
-    }*/
+    }
 
     /**
      * Get the arraylist of all checkpoints of this Hunt
      * @return the checkpoints as an arraylist
      */
-    /*public ArrayList<Checkpoint> getCheckpoints() {
+    public ArrayList<Checkpoint> getCheckpoints() {
         return this.checkpoints;
     }
-    */
-
-
 
 }
