@@ -34,5 +34,14 @@ public class EditHuntFragment extends Fragment {
 
         binding.edithuntname.setText(hunt.getName());
 
+        // create a new checkpoint and add it to this hunt
+        binding.newcheckbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Checkpoint checkpoint = new Checkpoint();
+                //hunt.addCheckpoint(checkpoint);
+            }
+        });
+
     }
 }
