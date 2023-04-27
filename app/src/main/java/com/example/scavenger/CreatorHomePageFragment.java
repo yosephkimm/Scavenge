@@ -79,7 +79,7 @@ public class CreatorHomePageFragment extends Fragment {
                             huntGV.setAdapter(adapter);
                         } else {
                             System.out.println("Hunts database collection is empty!");
-                            // maybe display something that says "no hunts created yet"?
+                            // maybe display something that says "user has no hunts created yet"?
                         }
                     }
                 });

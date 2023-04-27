@@ -10,6 +10,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -21,6 +22,7 @@ import android.view.View;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
@@ -31,12 +33,18 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
     private GoogleSignInOptions gso; // for sign in process
     private GoogleSignInClient gsc; // for sign in process
     private FirebaseAuth mAuth; // Firebase Authentication
-    private FirebaseUser user;
 
     private NavController navController;
 
@@ -88,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         // when the continue as guest button is pressed, sign in the user as a guest
-        findViewById(R.id.asguestimage).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.asguestbutton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 HomeActivity();
@@ -123,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 task.getResult(ApiException.class);
                 firebaseAuth(account.getIdToken());
+                addIfUserExistsInDatabase(account.getEmail());
                 HomeActivity();
             } catch (ApiException e) {
                 Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
@@ -154,29 +162,52 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
+                                System.out.println("firebaseAuth method success");
                                 // Sign in success, update UI with the signed-in user's information
                                 FirebaseUser fbuser = mAuth.getCurrentUser();
-                                user = fbuser;
+                                //addIfUserExistsInDatabase(fbuser.getEmail());
                             } else {
                                 // If sign in fails, display a message to the user.
-                                user = null;
                             }
                         }
                     });
         }
     }
 
+    private void addIfUserExistsInDatabase(String email) {
+        FirebaseFirestore firestoreDatabase = FirebaseFirestore.getInstance();
+        firestoreDatabase.collection("Users").get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        if (!queryDocumentSnapshots.isEmpty()) {
+                            List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                            boolean userExists = false;
+                            for (DocumentSnapshot d : list) {
+                                if (d.toObject(User.class).getEmail().equalsIgnoreCase(email)) userExists = true;
+                            }
+                            if (userExists) {
+                                return;
+                            }
+                        }
+                        User user = new User(email, R.drawable.studentprofilepic);
+                        addUserToDatabase(user);
+                    }
+                });
+    }
+
+    private void addUserToDatabase(User user) {
+        FirebaseFirestore firestoreDatabase = FirebaseFirestore.getInstance();
+        // creating a collection reference for our Firebase Firestore database.
+        CollectionReference dbUsers = firestoreDatabase.collection("Users");
+        // below method is used to add data to Firebase Firestore.
+        dbUsers.document(user.getEmail()).set(user);
+    }
+
     /*
      * Ends this activity and begins the LoginActivity (home page of the app)
      */
     private void HomeActivity() {
-        //navController.navigate(R.id.action_FirstFragment_to_HomeFragment);
-        /*
-        finish();
-        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-        startActivity(intent);
-
-         */
         navController.navigate(R.id.homeFragment2);
     }
 

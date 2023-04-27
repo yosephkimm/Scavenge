@@ -80,6 +80,14 @@ public class CreateHuntSettingsFragment extends Fragment {
                 createIfValidName(name, desc, bgcolor);
             }
         });
+
+        binding.cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavHostFragment.findNavController(CreateHuntSettingsFragment.this)
+                        .navigate(R.id.creatorHomePageFragment);
+            }
+        });
     }
 
     private void createIfValidName(String name, String desc, String bgcolor) {

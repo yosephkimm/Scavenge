@@ -9,13 +9,24 @@ public class Checkpoint {
     private ArrayList<Hint> hints;
     private String description;
 
-    public Checkpoint(double latitude, double longitude, String imageUrl, ArrayList<Hint> hints, String description) {
+    private Hunt hunt;
+
+    // the position of this checkpoint in the hunt
+    private int position;
+
+    public Checkpoint(Hunt hunt, double latitude, double longitude, String imageUrl, String description, int position) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.imageUrl = imageUrl;
-        this.hints = hints;
         this.description = description;
+        this.position = position;
+        this.hints = new ArrayList<Hint>();
+        this.hunt = hunt;
     }
+
+    public Checkpoint() {}
+
+    public Hunt getHunt(){return this.hunt;}
 
     // get latitude of the checkpoint
     public double getLatitude() {
@@ -66,6 +77,9 @@ public class Checkpoint {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public void setPosition(int position) {this.position = position; }
+    public int getPosition() {return this.position;}
 
     // add a hint to the checkpoint
     public void addHint(Hint hint) {

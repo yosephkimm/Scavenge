@@ -2,7 +2,6 @@ package com.example.scavenger;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,14 +13,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.scavenger.databinding.FragmentFirstBinding;
 import com.example.scavenger.databinding.FragmentHomeBinding;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class HomeFragment extends Fragment {
 
@@ -29,6 +31,8 @@ public class HomeFragment extends Fragment {
 
     private GoogleSignInOptions gso; // for sign in process
     private GoogleSignInClient gsc; // for sign in process
+
+    private GoogleSignInAccount account;
 
     private boolean isGuest;
 
@@ -63,11 +67,11 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        // set log out button to sign out and return to login screen
-        binding.logout.setOnClickListener(new View.OnClickListener(){
+        binding.profilepic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SignOut();
+                startActivity(new Intent(getActivity(), AccountWindow.class));
+                ((Activity) getActivity()).overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_in);
             }
         });
 
@@ -89,7 +93,7 @@ public class HomeFragment extends Fragment {
                 .build();
         gsc = GoogleSignIn.getClient(getActivity(),gso);
 
-        GoogleSignInAccount account=GoogleSignIn.getLastSignedInAccount(getActivity());
+        account=GoogleSignIn.getLastSignedInAccount(getActivity());
         // set display name text in home page and set if user is guest
         if (account != null) {
             binding.name.setText("Welcome, " + account.getDisplayName());
@@ -99,18 +103,31 @@ public class HomeFragment extends Fragment {
             isGuest = true;
         }
 
+        // get the user's profile pic and set the image resource to it
+        setProfilePic();
+
+
     }
 
-    /*
-     * sign the user out and return to the main activity (log in page)
-     */
-    private void SignOut() {
-        gsc.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                startActivity(new Intent(getActivity(),MainActivity.class));
-            }
-        });
+    public void onResume() {
+        super.onResume();
+        setProfilePic();
+
+    }
+
+    private void setProfilePic() {
+        if (account == null) return;
+        FirebaseFirestore.getInstance().collection("Users")
+                .document(account.getEmail())
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        int profilepic = documentSnapshot.toObject(User.class).getProfilePic();
+                        binding.profilepic.setImageResource(profilepic);
+                        binding.profilepic.setVisibility(View.VISIBLE);
+                    }
+                });
     }
 
     @Override

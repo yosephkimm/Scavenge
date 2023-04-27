@@ -43,7 +43,7 @@ public class Hunt {
         this.desc = description;
         this.creator = creator;
         this.bgcolor = bgcolor;
-        this.checkpoints = new ArrayList<Checkpoint>();
+        this.checkpoints = new ArrayList<>();
     }
 
     public Hunt() {
@@ -94,10 +94,10 @@ public class Hunt {
      * @param cp the checkpoint to add
      * @return true if successfully added, false if checkpoints is at max capacity
      */
-    public boolean addCheckpoint(Checkpoint cp) {
-        if (checkpoints.size() >= maxCheckpoints) return false;
+    public int addCheckpoint(Checkpoint cp) {
+        if (checkpoints.size() >= maxCheckpoints) return -1;
         checkpoints.add(cp);
-        return true;
+        return checkpoints.size()-1;
     }
 
     /**
