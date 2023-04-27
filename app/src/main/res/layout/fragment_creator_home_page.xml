@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_gravity="bottom"
+        android:layout_gravity="center"
         android:layout_margin="10dp"
         android:gravity="center">
         <TextView
@@ -30,7 +30,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:text="@string/editor_page"
+            android:text="My Scavenger Hunts"
+            android:textColor="@color/black"
             android:textSize="24sp"/>
 
         <ImageView
@@ -43,7 +44,7 @@
         <GridView
             android:id="@+id/huntGV"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="wrap_content"
             android:numColumns="1"
             android:verticalSpacing="5dp"/>
 

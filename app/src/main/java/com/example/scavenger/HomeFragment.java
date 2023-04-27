@@ -103,23 +103,20 @@ public class HomeFragment extends Fragment {
             isGuest = true;
         }
 
-        FirebaseFirestore.getInstance().collection("Users")
-                .document(account.getEmail())
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        int profilepic = documentSnapshot.toObject(User.class).getProfilePic();
-                        binding.profilepic.setImageResource(profilepic);
-                        binding.profilepic.setVisibility(View.VISIBLE);
-                    }
-                });
+        // get the user's profile pic and set the image resource to it
+        setProfilePic();
 
 
     }
 
     public void onResume() {
         super.onResume();
+        setProfilePic();
+
+    }
+
+    private void setProfilePic() {
+        if (account == null) return;
         FirebaseFirestore.getInstance().collection("Users")
                 .document(account.getEmail())
                 .get()

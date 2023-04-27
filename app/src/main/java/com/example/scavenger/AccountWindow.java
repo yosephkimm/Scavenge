@@ -43,7 +43,6 @@ public class AccountWindow extends Activity {
         int height = dm.heightPixels;
 
         getWindow().setLayout((int) (width * .71), (int) (height * .5));
-        //getWindow().setLayout(width, height);
 
         findViewById(R.id.logoutbutton2).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,7 +61,6 @@ public class AccountWindow extends Activity {
         findViewById(R.id.bballplayerprofilepic).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("basketball player clicked");
                 changeProfilePic(R.drawable.bballplayerprofilepic);
             }
         });
@@ -114,7 +112,6 @@ public class AccountWindow extends Activity {
             System.out.println("account is null!");
             return;
         }
-        System.out.println("changing profile pic");
         FirebaseFirestore.getInstance().collection("Users")
                 .document(account.getEmail())
                 .update("profilePic",newProfilePic);

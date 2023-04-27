@@ -65,6 +65,7 @@ public class HuntGVAdapter extends ArrayAdapter<Hunt> {
         if (hunt.getbgcolor().equalsIgnoreCase("Blue")) cardbg.setImageResource(R.drawable.bluebg);
         else if (hunt.getbgcolor().equalsIgnoreCase("Orange")) cardbg.setImageResource(R.drawable.orangebg);
         else cardbg.setImageResource(R.drawable.redbg);
+
         return listitemView;
     }
 
