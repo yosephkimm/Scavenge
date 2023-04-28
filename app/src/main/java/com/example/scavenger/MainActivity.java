@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.View;
 
 import androidx.navigation.NavController;
@@ -74,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         invalidlogin.setText("");
         signin= findViewById(R.id.signinimage);
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken("1010259840854-j4dsqm6hl4hg401hvhgm80t4rrbuk476.apps.googleusercontent.com  ")
+                .requestIdToken("1010259840854-l51gpa8l14bgb8o3kutmbfrlc79f947f.apps.googleusercontent.com")
                 .requestEmail()
                 .build();
         gsc = GoogleSignIn.getClient(this,gso);
@@ -121,11 +122,19 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode==100) {
             Task<GoogleSignInAccount> task=GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
+                if (!verifyEmail(account.getEmail())) {
+                    invalidlogin.setText("Error: invalid email");
+                    gsc.signOut();
+                    return;
+                }
                 task.getResult(ApiException.class);
                 firebaseAuth(account.getIdToken());
                 HomeActivity();
             } catch (ApiException e) {
-                Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
+                // Log the error code and error message to the console for debugging
+                Log.e("Google Sign-In", "Error code: " + e.getStatusCode() + ", Error message: " + e.getMessage());
+                // Display the actual error message received from ApiException in the Toast
+                Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
     }

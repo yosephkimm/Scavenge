@@ -51,7 +51,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Hint"
+            android:name=".HintWindow"
             android:theme="@style/Theme.Scavenger.TransparentTheme" />
         <activity
             android:name=".Mapping"
