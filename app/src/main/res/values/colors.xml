@@ -15,4 +15,7 @@
     <color name="muck">#9a9b74</color>
     <color name="turquoise">#72b5aa</color>
     <color name="lavender">#8692f7</color>
+
+    <color name="title_text_red">#820000</color>
+
 </resources>

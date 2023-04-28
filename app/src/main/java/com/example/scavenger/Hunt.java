@@ -1,18 +1,6 @@
 package com.example.scavenger;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
-
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A Hunt is played or created by users. It holds information about
@@ -32,9 +20,9 @@ public class Hunt {
     private String desc;
 
     /**
-     * The user as a FirebaseUser object that created this Hunt
+     * The user that created this Hunt
      */
-    private FirebaseUser user;
+    private String creator;
 
     /**
      * An arraylist of all of the checkpoints of this hunt
@@ -42,16 +30,20 @@ public class Hunt {
      */
     private ArrayList<Checkpoint> checkpoints;
 
+    private String bgcolor;
+
     /**
      * The maximum number of checkpoints that Hunts are allowed to have
      * @invariant maxCheckpoints > 0
      */
     private final int maxCheckpoints = 10;
 
-    public Hunt(String name, String description, FirebaseUser user) {
+    public Hunt(String name, String description, String creator, String bgcolor) {
         this.name = name;
         this.desc = description;
-        this.user = user;
+        this.creator = creator;
+        this.bgcolor = bgcolor;
+        this.checkpoints = new ArrayList<>();
     }
 
     public Hunt() {
@@ -91,15 +83,21 @@ public class Hunt {
         return this.desc;
     }
 
+    public String getCreator() { return this.creator; }
+
+    public String getbgcolor() {return this.bgcolor;}
+
+    public void setbgcolor(String bgcolor) {this.bgcolor = bgcolor;}
+
     /**
      * Add a new checkpoint to this Hunt
      * @param cp the checkpoint to add
      * @return true if successfully added, false if checkpoints is at max capacity
      */
-    public boolean addCheckpoint(Checkpoint cp) {
-        if (checkpoints.size() >= maxCheckpoints) return false;
+    public int addCheckpoint(Checkpoint cp) {
+        if (checkpoints.size() >= maxCheckpoints) return -1;
         checkpoints.add(cp);
-        return true;
+        return checkpoints.size()-1;
     }
 
     /**
@@ -109,6 +107,5 @@ public class Hunt {
     public ArrayList<Checkpoint> getCheckpoints() {
         return this.checkpoints;
     }
-
 
 }

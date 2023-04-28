@@ -1,5 +1,7 @@
 package com.example.scavenger;
 
+import com.google.android.gms.maps.model.Marker;
+
 import java.util.ArrayList;
 
 public class Checkpoint {
@@ -9,13 +11,34 @@ public class Checkpoint {
     private ArrayList<Hint> hints;
     private String description;
 
-    public Checkpoint(double latitude, double longitude, String imageUrl, ArrayList<Hint> hints, String description) {
+    public static final int BLUE = R.drawable.blueflag;
+    public static final int RED = R.drawable.redflag;
+    public static final int PURPLE = R.drawable.purpleflag;
+    public static final int YELLOW = R.drawable.yellowflag;
+    public static final int BLACK = R.drawable.flag;
+
+
+    private Hunt hunt;
+
+    // the position of this checkpoint in the hunt
+    private int position;
+
+    private int color;
+
+    public Checkpoint(Hunt hunt, double latitude, double longitude, String imageUrl, String description, int position, int color) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.imageUrl = imageUrl;
-        this.hints = hints;
         this.description = description;
+        this.position = position;
+        this.hints = new ArrayList<Hint>();
+        this.hunt = hunt;
+        this.color = color;
     }
+
+    public Checkpoint() {}
+
+    public Hunt getHunt(){return this.hunt;}
 
     // get latitude of the checkpoint
     public double getLatitude() {
@@ -67,6 +90,9 @@ public class Checkpoint {
         this.description = description;
     }
 
+    public void setPosition(int position) {this.position = position; }
+    public int getPosition() {return this.position;}
+
     // add a hint to the checkpoint
     public void addHint(Hint hint) {
         hints.add(hint);
@@ -81,5 +107,11 @@ public class Checkpoint {
     public void updateHint(int index, Hint hint) {
         hints.set(index, hint);
     }
+
+    public int getColor() {
+        return this.color;
+    }
+
+    public void setColor(int color) {this.color = color;}
 }
 

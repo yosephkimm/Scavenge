@@ -27,6 +27,8 @@ public class Hint {
         this.photoUrl = photoUrl;
     }
 
+    public Hint() {}
+
     /**
      * Returns the description of the hint.
      * @return The description of the hint.

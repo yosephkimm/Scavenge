@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?><!-- XML implementation of Card Layout
+https://www.geeksforgeeks.org/gridview-in-android-with-example/# -->
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="5dp"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="10dp">
+
+    <FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:ignore="HardcodedText">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <ImageView
+                android:id="@+id/huntcardbgplayhuntlist"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:src="@drawable/redbg"
+                android:scaleType="centerCrop" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/huntnameplayhuntlist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="Hunt Name"
+                android:textSize="24sp"
+                android:textAlignment="center"
+                android:layout_marginHorizontal="10dp"
+                android:textColor="@color/white"/>
+
+            <TextView
+                android:id="@+id/huntcreatorplayhuntlist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="Hunt Creator"
+                android:textSize="18sp"
+                android:textAlignment="center"
+                android:layout_marginHorizontal="10dp"
+                android:textColor="@color/white"/>
+
+            <TextView
+                android:id="@+id/huntdescplayhuntlist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:text="hunt description"
+                android:textSize="14sp"
+                android:textAlignment="center"
+                android:layout_marginHorizontal="10dp"
+                android:textColor="@color/white"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/playbuttonplayhuntlist"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:text="Play"
+                    android:layout_margin="5dp"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
+</androidx.cardview.widget.CardView>

@@ -1,4 +1,4 @@
-package com.example.scavenger;
+package com.example.scavenger.leaderboardfiles;
 
 public class PlayerTime {
     private String playerId, huntId;
@@ -10,10 +10,15 @@ public class PlayerTime {
      * @param huntId Id of hunt
      * @param time Time player completed the hunt
      */
-    PlayerTime(String playerId, String huntId, long time) {
+    public PlayerTime(String playerId, String huntId, long time) {
         this.playerId = playerId;
         this.huntId = huntId;
         this.time = time;
+    }
+
+    PlayerTime() {
+        playerId = "";
+        huntId = "";
     }
 
     /**

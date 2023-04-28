@@ -1,74 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeFragment">
+    android:orientation="vertical"
+    tools:context=".FirstFragment"
+    tools:ignore="HardcodedText">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/treasuremapbg"
+            android:scaleType="centerCrop" />
+    </LinearLayout>
 
-    <ImageView
-        android:id="@+id/homeblock"
-        android:layout_width="339dp"
-        android:layout_height="220dp"
-        android:layout_centerInParent="true"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="80dp"
-        android:src="@drawable/homeblock"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/playbutton"
-        android:layout_width="230dp"
-        android:layout_height="94dp"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="308dp"
-        android:src="@drawable/playbutton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/leaderboardbutton"
-        android:layout_width="230dp"
-        android:layout_height="94dp"
-        android:layout_centerInParent="true"
-        android:layout_marginStart="88dp"
-        android:layout_marginTop="528dp"
-        android:src="@drawable/leaderboardbutton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/createhuntbutton"
-        android:layout_width="230dp"
-        android:layout_height="94dp"
-        android:layout_centerInParent="true"
-        android:layout_marginStart="88dp"
-        android:layout_marginTop="416dp"
-        android:src="@drawable/createhuntbutton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/logout"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Log Out"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="vertical"
+        android:layout_marginBottom="70dp"
+        android:layout_gravity="center|bottom">
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:text="name"
+            android:textSize="18sp"/>
 
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
+        <ImageView
+            android:id="@+id/profilepic"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center|bottom"
+            android:clickable="true"
+            android:src="@drawable/workerprofilepic"
+            android:visibility="invisible"
+            android:focusable="true" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginStart="72dp"
-        android:layout_marginTop="152dp"
-        android:text="name"
-        android:textSize="18dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="horizontal">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/createhuntbutton"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:clickable="true"
+            android:src="@drawable/editbuttonimage"
+            android:focusable="true" />
+
+        <ImageView
+            android:id="@+id/playbutton"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:clickable="true"
+            android:src="@drawable/playbuttonimage"
+            android:focusable="true" />
+
+        <ImageView
+            android:id="@+id/leaderboardbutton"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:clickable="true"
+            android:src="@drawable/lbbuttonimage"
+            android:focusable="true" />
+    </LinearLayout>
+
+</FrameLayout>

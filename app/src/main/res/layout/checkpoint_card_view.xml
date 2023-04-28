@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="100dp"
+    android:layout_height="150dp"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:layout_margin="5dp"
+    tools:ignore="HardcodedText"
+    android:background="@android:color/transparent">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_gravity="bottom|center">
+        <ImageView
+            android:id="@+id/deletecptextview"
+            android:layout_width="25dp"
+            android:layout_height="30dp"
+            android:src="@drawable/trashbin"
+            android:layout_marginRight="20dp"
+            android:visibility="invisible"
+            android:clickable="true"
+            android:focusable="true" />
+        <ImageView
+            android:id="@+id/editcptextview"
+            android:layout_width="25dp"
+            android:layout_height="30dp"
+            android:src="@drawable/pencil"
+            android:layout_marginLeft="20dp"
+            android:visibility="invisible"
+            android:clickable="true"
+            android:focusable="true"/>
+    </LinearLayout>
+
+    <androidx.cardview.widget.CardView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/cpcardview"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="bottom"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="0dp"
+        android:clickable="true"
+        android:focusable="true">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:ignore="HardcodedText">
+            <ImageView
+                android:id="@+id/flagimage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/flag"/>
+            <TextView
+                android:id="@+id/checknum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="1"
+                android:textColor="@color/white"
+                android:textSize="24sp"/>
+        </FrameLayout>
+    </androidx.cardview.widget.CardView>
+</FrameLayout>
