@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.location.*;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -43,6 +45,12 @@ public class MapDemo extends AppCompatActivity implements OnMapReadyCallback {
         getLocationPermission();
     }
 
+
+
+    private void moveCamera(LatLng latLng, float zoom) {
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
+    }
+
     private void getDeviceLocation() {
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         try {
@@ -66,27 +74,6 @@ public class MapDemo extends AppCompatActivity implements OnMapReadyCallback {
 
     }
 
-    private void moveCamera(LatLng latLng, float zoom) {
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
-    }
-
-    public void onMapReady(GoogleMap googleMap) {
-        Toast.makeText(this, "Map is Ready", Toast.LENGTH_SHORT).show();
-        mMap = googleMap;
-        //googleMap.addMarker(new MarkerOptions()
-        //.position(new LatLng(0, 0))
-        //      .title("Marker"));
-        if (mLocationPermissionsGranted) {
-            getDeviceLocation();
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
-                    Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                return;
-            }
-            mMap.setMyLocationEnabled(true);
-            mMap.getUiSettings().setMyLocationButtonEnabled(false);
-        }
-    }
     private void initMap(){
         // Get a handle to the fragment and register the callback.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -94,9 +81,39 @@ public class MapDemo extends AppCompatActivity implements OnMapReadyCallback {
         mapFragment.getMapAsync(this);
 
     }
+    public void onMapReady(GoogleMap googleMap) {
+        Toast.makeText(this, "Map is Ready", Toast.LENGTH_SHORT).show();
+        mMap = googleMap;
+        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        mMap.setMinZoomPreference(15.0f);
+        mMap.setMaxZoomPreference(20.0f);
+        //googleMap.addMarker(new MarkerOptions()
+        //.position(new LatLng(0, 0))
+        //      .title("Marker"));
+        if (mLocationPermissionsGranted) {
+            //getDeviceLocation();
+
+            LatLngBounds wheatonBounds = new LatLngBounds(
+                    new LatLng(41.867290, -88.101175), // SW bounds
+                    new LatLng(41.873652, -88.093206)  // NE bounds
+            );
+            mMap.setLatLngBoundsForCameraTarget(wheatonBounds);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(wheatonBounds.getCenter(), 17));
+
+
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            //mMap.setMyLocationEnabled(true);
+            //mMap.getUiSettings().setMyLocationButtonEnabled(false);
+        }
+    }
+
     private void getLocationPermission(){
         String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION,
-        Manifest.permission.ACCESS_COARSE_LOCATION};
+                Manifest.permission.ACCESS_COARSE_LOCATION};
 
         if(ContextCompat.checkSelfPermission(this.getApplicationContext(),
                 FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
@@ -115,6 +132,8 @@ public class MapDemo extends AppCompatActivity implements OnMapReadyCallback {
                     LOCATION_PERMISSION_REQUEST_CODE);
         }
     }
+
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
