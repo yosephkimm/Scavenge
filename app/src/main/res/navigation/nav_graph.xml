@@ -28,9 +28,6 @@
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_homeFragment2_to_PlayHunt"
-            app:destination="@id/PlayHunt" />
-        <action
             android:id="@+id/action_homeFragment2_to_FirstFragment"
             app:destination="@id/FirstFragment" />
         <action
@@ -39,6 +36,9 @@
         <action
             android:id="@+id/action_homeFragment2_to_leaderboardMainFragment"
             app:destination="@id/leaderboardMainFragment" />
+        <action
+            android:id="@+id/action_homeFragment2_to_playHuntListFragment"
+            app:destination="@id/playHuntListFragment" />
     </fragment>
     <fragment
         android:id="@+id/createHuntSettingsFragment"
@@ -73,5 +73,14 @@
         android:id="@+id/leaderboardFragment"
         android:name="com.example.scavenger.LeaderboardFragment"
         tools:layout="@layout/fragment_leaderboard"/>
+    <fragment
+        android:id="@+id/playHuntListFragment"
+        android:name="com.example.scavenger.PlayHuntListFragment"
+        android:label="fragment_play_hunt_list"
+        tools:layout="@layout/fragment_play_hunt_list" >
+        <action
+            android:id="@+id/action_playHuntListFragment_to_PlayHunt"
+            app:destination="@id/PlayHunt" />
+    </fragment>
 
 </navigation>

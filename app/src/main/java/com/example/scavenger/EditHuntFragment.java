@@ -84,7 +84,7 @@ public class EditHuntFragment extends Fragment implements OnMapReadyCallback {
         mapView.getMapAsync(this);
 
 
-        // checklist stuff
+        // checkpoint list stuff
         adapter = new CheckpointRVAdapter((ArrayList<Checkpoint>) hunt.getCheckpoints().clone(), getActivity(), this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         recyclerView = binding.checkpointRV;

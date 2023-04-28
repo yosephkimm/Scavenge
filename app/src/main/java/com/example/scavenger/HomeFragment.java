@@ -55,7 +55,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 NavHostFragment.findNavController(HomeFragment.this)
-                        .navigate(R.id.action_homeFragment2_to_PlayHunt);
+                        .navigate(R.id.action_homeFragment2_to_playHuntListFragment);
             }
         });
 

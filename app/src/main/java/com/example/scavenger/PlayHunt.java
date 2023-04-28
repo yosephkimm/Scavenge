@@ -67,6 +67,7 @@ public class PlayHunt extends Fragment {
     private FragmentPlayHuntBinding binding;
     private ImageView imageView;
 
+    public static Hunt hunt;
 
     private Double time = 0.0;
     @Override
