@@ -2,10 +2,13 @@ package com.example.scavenger.playhuntfiles;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Location;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -57,13 +60,28 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -79,7 +97,11 @@ public class PlayHunt extends Fragment {
 
     private FragmentPlayHuntBinding binding;
     private ImageView imageView;
-
+    private String link;
+    private String check;
+    private String temp[];
+    private JSONObject one;
+    private JSONObject two;
     public static Hunt hunt;
 
     private Checkpoint currentCheckpoint;
@@ -97,16 +119,18 @@ public class PlayHunt extends Fragment {
     private RecyclerView recyclerView;
     private TextView timeTV;
 
-    private double endTime;
+    private long endTime;
 
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
+
         binding = FragmentPlayHuntBinding.inflate(inflater, container, false);
         FirebaseApp.initializeApp(requireContext());
-
+        link = "";
+        temp = new String[2];
         return binding.getRoot();
 
     }
@@ -171,21 +195,16 @@ public class PlayHunt extends Fragment {
         timeTV.setText("0");
         final Handler handler = new Handler();
         handler.post(new Runnable() {
-            double i = 0;
+            int i = 0;
             @Override
             public void run() {
-                i+=0.01;
-                DecimalFormat df = new DecimalFormat("#.#");
-                timeTV.setText(String.valueOf(Double.parseDouble(df.format(i))));
-                handler.postDelayed(this, 10);
+                i++;
+                timeTV.setText(String.valueOf(i));
+                handler.postDelayed(this, 1000);
             }
         });
 
-    }
 
-    public void displayHints() {
-        startActivity(new Intent(getActivity(), HintWindow.class));
-        ((Activity) getActivity()).overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_in);
     }
 
     private void checkLocation() {
@@ -205,7 +224,7 @@ public class PlayHunt extends Fragment {
                                 if (currentCheckpoint.getPosition() == hunt.getCheckpoints().size()-1) {
                                     // the user has completed the hunt!
                                     // stop the time
-                                    endTime = Double.parseDouble((String) timeTV.getText());
+                                    endTime = Long.parseLong((String) timeTV.getText());
                                     // create a new PlayerTime object and add it to the database
                                     updatePlayerTime(endTime);
                                     // display something that says "Nice job! You did it!"
@@ -229,14 +248,14 @@ public class PlayHunt extends Fragment {
         }
     }
 
-    private void updatePlayerTime(double endTime) {
+    private void updatePlayerTime(long endTime) {
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
         gsc = GoogleSignIn.getClient(getActivity(),gso);
         GoogleSignInAccount account=GoogleSignIn.getLastSignedInAccount(getActivity());
 
-        PlayerTime playerTime = new PlayerTime( account.getDisplayName(),hunt.getName(),endTime);
+        PlayerTime playerTime = new PlayerTime(hunt.getName(), account.getEmail(),endTime);
 
         FirebaseFirestore firestoreDatabase = FirebaseFirestore.getInstance();
         DocumentReference dbPlayerTimes = firestoreDatabase.collection("PlayerLeaderboardTimes").document();
@@ -287,137 +306,321 @@ public class PlayHunt extends Fragment {
                     //BitmapFactory.decodeResource(getResources(), R.drawable.test_run);
             FirebaseStorage storage = FirebaseStorage.getInstance();
             StorageReference storageRef = storage.getReference();
+
+
             // Create a reference to the image file in Firebase Storage
             StorageReference imageRef = storageRef.child("images/image.jpg");
+            StorageReference imageTest = storageRef.child("images/test_run.jpg");
+
+            //UPDATE
+            // Retrieve from Firebase the image of current checkpoint and upload to imgur
+            File localFile = null;
+            try {
+                localFile = File.createTempFile("image", "jpg");
+                File finalLocalFile = localFile;
+                imageTest.getFile(localFile).addOnSuccessListener(taskSnapshot -> {
+                    // The image has been downloaded to the local file, so we can decode it into a Bitmap
+                    Bitmap testBitmap = BitmapFactory.decodeFile(finalLocalFile.getAbsolutePath());
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    testBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                    byte[] dataImage = baos.toByteArray();
+                    String send = Base64.encodeToString(dataImage, Base64.DEFAULT);
+                    ImgurUploadTask task = new ImgurUploadTask(requireContext());
+                    task.execute(send);
+                }).addOnFailureListener(exception -> {
+                    // Handle any errors that occurred during the download...
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
 
             // Convert the Bitmap to a byte array
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             imageBitmap.compress(Bitmap.CompressFormat.JPEG, 80, baos);
             byte[] dataImage = baos.toByteArray();
+            String send = Base64.encodeToString(dataImage, Base64.DEFAULT);
+
+            ImgurUploadTask task2 = new ImgurUploadTask(requireContext());
+
+            task2.execute(send);
+
             // Upload the byte array to Firebase Storage
             UploadTask uploadTask = imageRef.putBytes(dataImage);
-            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    // Image uploaded successfully, you can get the download URL here
-                    imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            String imageUrl = uri.toString();
-                            // Do something with the image URL, e.g., display it in an ImageView
-                        }
-                    });
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    // Handle any errors that occurred while uploading the image
-                }
-            });
 
-            StorageReference imageTest = storageRef.child("images/test_run.jpg");
-            imageRef.getDownloadUrl().toString();
-            imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                @Override
-                public void onSuccess(Uri uri) {
-                    String one = uri.toString();
-                    // Handle the success, one contains the download URL of image1.jpg
+            //link and check both hold the jpg url
 
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    // Handle the failure
-                }
-            });
-            String one = "https://firebasestorage.googleapis.com/v0/b/scavenger-6aa7e.appspot.com/o/images%2Fimage.jpg?alt=media&token=8c077b56-2db4-4e37-bbdc-389888a17573";
-            String two = "https://firebasestorage.googleapis.com/v0/b/scavenger-6aa7e.appspot.com/o/images%2Ftest_run.jpg?alt=media&token=bdc63467-e0a6-4688-b328-26457120540c";
-            imageTest.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                @Override
-                public void onSuccess(Uri uri) {
-                    String two = uri.toString();
-                    // Handle the success, two contains the download URL of image2.jpg
 
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    // Handle the failure, e.g. show an error message
-                }
-            });
 
-            CompareImagesTask task = new CompareImagesTask();
-            task.execute(one, two);
 
 
 
         }
     }
 
-
-    private String bitmapToBase64(Bitmap bitmap) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        // Compress the bitmap with different compression options
-        // You can adjust the compression quality to reduce the image size
-        // Possible values for the format are JPEG, PNG, and WEBP
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
-        byte[] byteArray = byteArrayOutputStream.toByteArray();
-        return Base64.encodeToString(byteArray, Base64.DEFAULT);
-    }
-
-
-    private class CompareImagesTask extends AsyncTask<String, Void, String> {
+    private class NetworkTask extends AsyncTask<String, Void, String> {
+        private String jsonResponse;
 
         @Override
         protected String doInBackground(String... strings) {
-            String one = strings[0];
-            String two = strings[1];
-
-            OkHttpClient client = new OkHttpClient();
-
-            MediaType mediaType = MediaType.parse("application/json");
-            String value = "{\r\n    \"image_a\": {\r\n        \"type\": \"url\",\r\n        \"content\": \"https://is4-ssl.mzstatic.com/image/thumb/Purple62/v4/0e/cc/cf/0ecccfae-0d5a-dcfc-9822-815f0705aadf/source/256x256bb.jpg\"\r\n    },\r\n    \"image_b\": {\r\n        \"type\": \"url\",\r\n        \"content\": \"https://is4-ssl.mzstatic.com/image/thumb/Purple62/v4/0e/cc/cf/0ecccfae-0d5a-dcfc-9822-815f0705aadf/source/256x256bb.jpg\"\r\n    }\r\n}";
-            RequestBody body = RequestBody.create(mediaType, value);
-            Request request = new Request.Builder()
-                    .url("https://similarity2.p.rapidapi.com/similarity")
-                    .post(body)
-                    .addHeader("content-type", "application/json")
-                    .addHeader("X-RapidAPI-Key", "cc0ba133dfmshd8ceeaf057ee73ep157d8fjsn5da06ad0ec11")
-                    .addHeader("X-RapidAPI-Host", "similarity2.p.rapidapi.com")
-                    .build();
 
             try {
-                Response response = client.newCall(request).execute();
-                if (response.isSuccessful()) {
-                    return response.body().string();
-                } else {
-                    // Handle failure
+                String imageUrl1 = strings[0];
+                // Encode credentials
+                String credentialsToEncode = "acc_7349655130743c2" + ":" + "887e02a21648c7305fbe41f338253124";
+                String basicAuth = Base64.encodeToString(credentialsToEncode.getBytes(StandardCharsets.UTF_8), Base64.DEFAULT);
+
+                // Set endpoint URL, index ID, features type, and image URLs
+                String endpoint_url = "https://api.imagga.com/v2/tags";
+
+
+                // Create URL with query parameters
+                String url = endpoint_url + "?image_url=" + imageUrl1;
+                URL urlObject = new URL(url);
+
+                // Open connection
+                HttpURLConnection connection = (HttpURLConnection) urlObject.openConnection();
+                connection.setRequestProperty("Authorization", "Basic " + basicAuth);
+                // Send GET
+                int responseCode = connection.getResponseCode();
+                System.out.println("\nSending 'GET' request to URL : " + url);
+                System.out.println("Response Code : " + responseCode);
+
+                // Read response
+                BufferedReader connectionInput = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                jsonResponse = connectionInput.readLine();
+                connectionInput.close();
+                // Parse JSON response
+                System.out.println(jsonResponse);
+                JSONObject jsonObject = new JSONObject(jsonResponse);
+                if (one == null){
+                    one = jsonObject;
                 }
-            } catch (IOException e) {
-                Log.e("PlayHunt", "Failed to compare images", e);
-                // Handle failure
+                else{
+                    two = jsonObject;
+                }
+                if (two != null && one != null) {
+
+
+                    try {
+                        System.out.println(compareJsonObjects(one, two)+"ITOWRKED");
+                    } catch (JSONException e) {
+                        System.out.println("Error occured:" + e.getMessage());
+                        throw new RuntimeException(e);
+                    }
+
+
+                }
+
+            } catch (Exception e) {
+
             }
+
+
             return null;
         }
 
-        @Override
-        protected void onPostExecute(String responseData) {
-            if (responseData != null) {
-                // Process the response data
-                System.out.println(responseData);
-            } else {
-                System.out.println("ASD");
-            }
-        }
     }
-
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
     }
 
+    private class ImgurUploadTask extends AsyncTask<String, Void, String> {
+
+        private Context context;
+        private ProgressDialog progressDialog;
+
+        public ImgurUploadTask(Context context) {
+            this.context = context;
+            progressDialog = new ProgressDialog(context);
+            progressDialog.setCancelable(false);
+            progressDialog.setMessage("Uploading photo...");
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+
+            String encoded = strings[0];
+            String clientID = "309c32d8953018c";
+
+            OkHttpClient client = new OkHttpClient();
+            URL url = null;
+            try {
+                url = new URL("https://api.imgur.com/3/image");
+            } catch (MalformedURLException e) {
+                throw new RuntimeException(e);
+            }
+            HttpURLConnection conn = null;
+            try {
+                conn = (HttpURLConnection) url.openConnection();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            // Encode the photo file as Base64
+            String data = null;
+            try {
+                data = URLEncoder.encode("image", "UTF-8") + "="
+                        + URLEncoder.encode(encoded, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                throw new RuntimeException(e);
+            }
+
+            conn.setDoOutput(true);
+            conn.setDoInput(true);
+            try {
+                conn.setRequestMethod("POST");
+            } catch (ProtocolException e) {
+                throw new RuntimeException(e);
+            }
+            conn.setRequestProperty("Authorization", "Client-ID " + clientID);
+            try {
+                conn.setRequestMethod("POST");
+            } catch (ProtocolException e) {
+                throw new RuntimeException(e);
+            }
+            conn.setRequestProperty("Content-Type",
+                    "application/x-www-form-urlencoded");
+
+            try {
+                conn.connect();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            StringBuilder stb = new StringBuilder();
+            OutputStreamWriter wr = null;
+            try {
+                wr = new OutputStreamWriter(conn.getOutputStream());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            try {
+                wr.write(data);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            try {
+                wr.flush();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            // Get the response
+            BufferedReader rd = null;
+            try {
+                rd = new BufferedReader(
+                        new InputStreamReader(conn.getInputStream()));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            String line;
+            while (true) {
+                try {
+                    if (!((line = rd.readLine()) != null)) break;
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                stb.append(line).append("\n");
+            }
+            try {
+                wr.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            try {
+                rd.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            return stb.toString();
+        }
+
+        @Override
+        protected void onPostExecute(String response) {
+            super.onPostExecute(response);
+            progressDialog.dismiss();
+            Toast.makeText(context, "Upload successful!", Toast.LENGTH_SHORT).show();
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+                JSONObject data = jsonObject.getJSONObject("data");
+
+                NetworkTask task = new NetworkTask();
+
+
+                if (link == ""){
+                    link = data.getString("link");
+                    Log.d("Upload", "Image Link: " + link);
+                    task.execute(link);
+                }
+                else{
+                    check = data.getString("link");
+                    Log.d("Upload", "Image Link: " + check);
+                    task.execute(check);
+                }
+
+
+
+                // You can use the 'link' variable here to do whatever you need to do with the uploaded image URL
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    public int compareJsonObjects(JSONObject json1, JSONObject json2) throws JSONException {
+        int similarityPercentage = 0;
+        Map<String, Double> map1 = new HashMap<String, Double>();
+        Map<String, Double> map2 = new HashMap<String, Double>();
+
+
+        // Parse the first five tags and confidence levels from json1
+        JSONObject jsonObject1 = json1;
+        JSONArray predictions1 = jsonObject1.getJSONObject("result").getJSONArray("tags");
+        for (int i = 0; i < Math.min(5, predictions1.length()); i++) {
+            JSONObject tagObject = predictions1.getJSONObject(i);
+            String tag = tagObject.getJSONObject("tag").getString("en");
+            double confidence = tagObject.getDouble("confidence");
+            map1.put(tag, confidence);
+        }
+
+        // Parse the tags and confidence levels from json2
+        JSONObject jsonObject2 = json2  ;
+        JSONArray predictions2 = jsonObject2.getJSONObject("result").getJSONArray("tags");
+        for (int i = 0; i < Math.min(5, predictions2.length()); i++) {
+            JSONObject tagObject = predictions2.getJSONObject(i);
+            String tag = tagObject.getJSONObject("tag").getString("en");
+            double confidence = tagObject.getDouble("confidence");
+            map2.put(tag, confidence);
+        }
+
+        // Compare the hash maps
+        int numMatchingTags = 0;
+        int totalConfidence = 0;
+
+        for (String tag : map1.keySet()) {
+            if (map2.containsKey(tag)) {
+                Double confidence1 = map1.get(tag);
+                Double confidence2 = map2.get(tag);
+                numMatchingTags++;
+                totalConfidence += (100-(Math.abs(confidence1-confidence2)));
+            }
+        }
+
+        // Calculate similarity percentage based on the average confidence of matching tags
+        if (numMatchingTags > 0) {
+            similarityPercentage = (int) ((double) totalConfidence / numMatchingTags);
+        }
+
+        return similarityPercentage;
+    }
 
 
 }
