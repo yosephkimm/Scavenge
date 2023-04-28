@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-import com.example.scavenger.Hunt;
+import com.example.scavenger.playhuntfiles.Hunt;
 import com.example.scavenger.R;
 import com.example.scavenger.databinding.FragmentCreateHuntSettingsBinding;
 import com.google.android.gms.tasks.OnSuccessListener;

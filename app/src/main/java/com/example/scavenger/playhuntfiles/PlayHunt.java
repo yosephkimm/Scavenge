@@ -1,4 +1,4 @@
-package com.example.scavenger;
+package com.example.scavenger.playhuntfiles;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -22,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.scavenger.R;
 import com.example.scavenger.databinding.FragmentPlayHuntBinding;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -57,6 +58,7 @@ public class PlayHunt extends Fragment {
     private FragmentPlayHuntBinding binding;
     private ImageView imageView;
 
+    static Hunt hunt;
     private String link;
     private String check;
     private String temp[];
@@ -108,7 +110,7 @@ public class PlayHunt extends Fragment {
         binding.buttonConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                imageView.setImageResource(R.drawable.ic_menu_gallery);
+                imageView.setImageResource(android.R.drawable.ic_menu_gallery);
             }
         });
     }

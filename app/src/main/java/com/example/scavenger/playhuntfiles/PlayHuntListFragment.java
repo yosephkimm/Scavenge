@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 
-import com.example.scavenger.Hunt;
 import com.example.scavenger.databinding.FragmentPlayHuntListBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -52,7 +51,8 @@ public class PlayHuntListFragment extends Fragment {
                             List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
                             ArrayList<Hunt> huntArrayList = new ArrayList<>();
                             for (DocumentSnapshot d : list) {
-                                huntArrayList.add(d.toObject(Hunt.class));
+                                if (d.toObject(Hunt.class).isPublished())
+                                    huntArrayList.add(d.toObject(Hunt.class));
                             }
                             adapter = new PlayHuntListGVAdapter(getActivity(), huntArrayList, PlayHuntListFragment.this);
                             huntGV.setAdapter(adapter);

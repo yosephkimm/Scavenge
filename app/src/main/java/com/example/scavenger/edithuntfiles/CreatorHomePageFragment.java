@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 
-import com.example.scavenger.Hunt;
+import com.example.scavenger.playhuntfiles.Hunt;
 import com.example.scavenger.R;
 import com.example.scavenger.databinding.FragmentCreatorHomePageBinding;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;

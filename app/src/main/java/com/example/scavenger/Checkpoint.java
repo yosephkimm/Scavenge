@@ -1,6 +1,6 @@
 package com.example.scavenger;
 
-import com.google.android.gms.maps.model.Marker;
+import com.example.scavenger.playhuntfiles.Hunt;
 
 import java.util.ArrayList;
 

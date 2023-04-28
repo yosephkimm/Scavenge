@@ -80,6 +80,14 @@ https://www.geeksforgeeks.org/gridview-in-android-with-example/# -->
                     android:text="Delete"
                     android:layout_marginLeft="5dp"/>
 
+                <Button
+                    android:id="@+id/publishbutton"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:text="Publish"
+                    android:layout_marginLeft="5dp"/>
+
             </LinearLayout>
         </LinearLayout>
     </FrameLayout>

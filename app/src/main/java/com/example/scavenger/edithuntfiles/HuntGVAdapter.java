@@ -12,9 +12,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.scavenger.Hunt;
+import com.example.scavenger.playhuntfiles.Hunt;
 import com.example.scavenger.R;
-import com.example.scavenger.edithuntfiles.EditHuntFragment;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -60,6 +59,13 @@ public class HuntGVAdapter extends ArrayAdapter<Hunt> {
             }
         });
 
+        listitemView.findViewById(R.id.publishbutton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                publishHunt(hunt);
+            }
+        });
+
         huntnameTV.setText(hunt.getName());
         huntdescTV.setText(hunt.getDesc());
         if (hunt.getbgcolor().equalsIgnoreCase("Blue")) cardbg.setImageResource(R.drawable.bluebg);
@@ -75,6 +81,9 @@ public class HuntGVAdapter extends ArrayAdapter<Hunt> {
      * @param hunt the Hunt that is being edited
      */
     private void editHunt(Hunt hunt) {
+        FirebaseFirestore.getInstance().collection("Hunts")
+                .document(hunt.getName())
+                .update("isPublished", false);
         EditHuntFragment.hunt = hunt;
         NavHostFragment.findNavController(currentFragment)
                 .navigate(R.id.action_creatorHomePageFragment_to_editHuntFragment);
@@ -90,6 +99,12 @@ public class HuntGVAdapter extends ArrayAdapter<Hunt> {
         dbHunts.document(hunt.getName()).delete();
         NavHostFragment.findNavController(currentFragment)
                 .navigate(R.id.creatorHomePageFragment);
+    }
+
+    private void publishHunt(Hunt hunt) {
+        FirebaseFirestore.getInstance().collection("Hunts")
+                .document(hunt.getName())
+                .update("isPublished", true);
     }
 
 }
