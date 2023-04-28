@@ -1,16 +1,22 @@
 package com.example.scavenger;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.ListView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
+import androidx.fragment.app.Fragment;
+
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.GridView;
+
+import com.example.scavenger.databinding.FragmentLeaderboardMainBinding;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -18,28 +24,26 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LeaderboardActivity extends AppCompatActivity {
+public class LeaderboardMainFragment extends Fragment {
 
-    ListView listView;
-    HuntArrayAdapter arrayAdapter;
-    Hunt[] huntList = new Hunt[0];
+    private FragmentLeaderboardMainBinding binding;
+
+    private GridView huntGV;
+
+    HuntArrayAdapter adapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_leaderboard);
-
-        listView = findViewById(R.id.listView);
-        arrayAdapter = new HuntArrayAdapter();
-        listView.setAdapter(arrayAdapter);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        setHasOptionsMenu(true);
+        binding = FragmentLeaderboardMainBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
-    // outside onCreate
-
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        getMenuInflater().inflate(R.menu.actionbar_menu, menu);
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        getActivity().getMenuInflater().inflate(R.menu.actionbar_menu, menu);
         MenuItem menuItem = menu.findItem(R.id.search);
         SearchView searchView = (SearchView) menuItem.getActionView();
         searchView.setQueryHint("Search here");
@@ -52,14 +56,28 @@ public class LeaderboardActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                arrayAdapter.getFilter().filter(newText);
+                adapter.getFilter().filter(newText);
                 return false;
             }
         });
 
-        return super.onCreateOptionsMenu(menu);
+        menuItem.setVisible(true);
     }
-    private void displayHunts() {
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        MenuItem item=menu.findItem(R.id.search);
+        item.setVisible(false);
+    }
+
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getView().setBackgroundColor(getResources().getColor(R.color.avocado));
+
+        displayLeaderboards();
+    }
+
+    private void displayLeaderboards() {
         FirebaseFirestore.getInstance().collection("Hunts").get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
@@ -74,7 +92,7 @@ public class LeaderboardActivity extends AppCompatActivity {
                                 if (d.toObject(Hunt.class).getCreator().equalsIgnoreCase(userEmail))
                                     huntArrayList.add(d.toObject(Hunt.class));
                             }
-                            HuntGVAdapter adapter = new HuntGVAdapter(getActivity(), huntArrayList, CreatorHomePageFragment.this);
+                            adapter = new HuntArrayAdapter(getActivity(), huntArrayList, LeaderboardMainFragment.this);
                             huntGV.setAdapter(adapter);
                         } else {
                             System.out.println("Hunts database collection is empty!");

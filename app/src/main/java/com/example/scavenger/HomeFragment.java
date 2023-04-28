@@ -62,8 +62,8 @@ public class HomeFragment extends Fragment {
         binding.leaderboardbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), LeaderboardActivity.class));
-                ((Activity) getActivity()).overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_in);
+                NavHostFragment.findNavController(HomeFragment.this)
+                        .navigate(R.id.action_homeFragment2_to_leaderboardMainFragment);
             }
         });
 
