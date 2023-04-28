@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,14 +20,22 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
-public class HuntArrayAdapter extends ArrayAdapter<Hunt> {
+public class HuntArrayAdapter extends ArrayAdapter<Hunt> implements Filterable {
     Fragment currentFragment;
+
+    private ArrayList<Hunt> huntArrayList;
+
+    private ArrayList<Hunt> filteredList;
+
+    private CustomFilter filter;
 
     // code modified from https://www.geeksforgeeks.org/gridview-in-android-with-example/#
 
     public HuntArrayAdapter(@NonNull Context context, ArrayList<Hunt> huntArrayList, Fragment fragment) {
         super(context, 0, huntArrayList);
         currentFragment = fragment;
+        this.huntArrayList = new ArrayList<>(huntArrayList);
+        this.filteredList = new ArrayList<>(huntArrayList);
     }
 
     @NonNull
@@ -53,7 +63,7 @@ public class HuntArrayAdapter extends ArrayAdapter<Hunt> {
 
         huntnameTV.setText(hunt.getName());
         huntdescTV.setText(hunt.getDesc());
-        creatoremailTV.setText("Made by " + hunt.getCreator());
+        creatoremailTV.setText("Made by: " + hunt.getCreator());
         if (hunt.getbgcolor().equalsIgnoreCase("Blue")) cardbg.setImageResource(R.drawable.bluebg);
         else if (hunt.getbgcolor().equalsIgnoreCase("Orange")) cardbg.setImageResource(R.drawable.orangebg);
         else cardbg.setImageResource(R.drawable.redbg);
@@ -71,4 +81,48 @@ public class HuntArrayAdapter extends ArrayAdapter<Hunt> {
                 .navigate(R.id.action_leaderboardMainFragment_to_leaderboardFragment); // LeaderboardMainFragment to LeaderboardFragment
     }
 
+    @Override
+    public int getCount() {
+        return filteredList.size();
+    }
+
+    @Override
+    public Hunt getItem(int position) {
+        return filteredList.get(position);
+    }
+
+    public Filter getFilter() {
+        if (filter == null) {
+            filter = new CustomFilter();
+        }
+        return filter;
+    }
+
+    private class CustomFilter extends Filter {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            FilterResults results = new FilterResults();
+            ArrayList<Hunt> tempList = new ArrayList<>();
+            if (constraint != null && constraint.length() > 0) {
+                for (Hunt hunt : huntArrayList) {
+                    if (hunt.getName().contains(constraint.toString().toLowerCase())) {
+                        tempList.add(hunt);
+                    }
+                }
+                results.count = tempList.size();
+                results.values = tempList;
+            } else {
+                results.count = huntArrayList.size();
+                results.values = huntArrayList;
+            }
+
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            filteredList = (ArrayList<Hunt>) results.values;
+            notifyDataSetChanged();
+        }
+    }
 }
