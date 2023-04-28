@@ -1,4 +1,4 @@
-package com.example.scavenger.playhuntfiles;
+package com.example.scavenger;
 
 import android.Manifest;
 import android.app.Activity;
@@ -23,6 +23,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.scavenger.Hunt;
+import com.example.scavenger.R;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -31,11 +33,8 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.example.scavenger.Checkpoint;
 import com.example.scavenger.Hint;
-import com.example.scavenger.Hunt;
-import com.example.scavenger.R;
 import com.example.scavenger.databinding.FragmentPlayHuntBinding;
 import com.example.scavenger.edithuntfiles.CheckpointRVAdapter;
 import com.example.scavenger.edithuntfiles.CreateHuntSettingsFragment;
@@ -92,11 +91,12 @@ import okhttp3.Response;
 
 public class PlayHunt extends Fragment {
 
+    private FragmentPlayHuntBinding binding;
+    private ImageView imageView;
     private GoogleSignInOptions gso; // for sign in process
     private GoogleSignInClient gsc; // for sign in process
 
-    private FragmentPlayHuntBinding binding;
-    private ImageView imageView;
+
     private String link;
     private String check;
     private String temp[];
@@ -167,14 +167,14 @@ public class PlayHunt extends Fragment {
         binding.buttonMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), MapDemo.class));
+                startActivity(new Intent(getActivity(), Mapping.class));
                 ((Activity) getActivity()).overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_in);
             }
         });
         binding.buttonCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivityForResult(new Intent(MediaStore.ACTION_IMAGE_CAPTURE), 105);
+                startActivityForResult(new Intent(MediaStore.ACTION_IMAGE_CAPTURE),105);
             }
         });
         binding.buttonConfirm.setOnClickListener(new View.OnClickListener() {
