@@ -16,6 +16,11 @@ public class PlayerTime {
         this.time = time;
     }
 
+    PlayerTime() {
+        playerId = "";
+        huntId = "";
+    }
+
     /**
      * Getter for playerId
      * @return Id of player
