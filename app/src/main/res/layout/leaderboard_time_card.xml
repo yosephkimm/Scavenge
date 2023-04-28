@@ -47,7 +47,7 @@ https://www.geeksforgeeks.org/gridview-in-android-with-example/# -->
                 android:textSize="20sp"
                 android:textAlignment="center"
                 android:layout_marginHorizontal="10dp"
-                android:textColor="@color/black"/>
+                android:textColor="@color/teal_700"/>
 
             <TextView
                 android:id="@+id/playertime"
@@ -58,7 +58,7 @@ https://www.geeksforgeeks.org/gridview-in-android-with-example/# -->
                 android:textSize="20sp"
                 android:textAlignment="center"
                 android:layout_marginHorizontal="10dp"
-                android:textColor="@color/black"/>
+                android:textColor="@color/turquoise"/>
         </LinearLayout>
     </FrameLayout>
 </androidx.cardview.widget.CardView>
