@@ -1,7 +1,6 @@
-package com.example.scavenger;
+package com.example.scavenger.edithuntfiles;
 
 import android.Manifest;
-import android.content.ClipData;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -12,8 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,13 +18,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
 import android.widget.Toast;
 
-import com.example.scavenger.databinding.FragmentCreatorHomePageBinding;
+import com.example.scavenger.Checkpoint;
+import com.example.scavenger.Hint;
+import com.example.scavenger.Hunt;
+import com.example.scavenger.R;
 import com.example.scavenger.databinding.FragmentEditHuntBinding;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.example.scavenger.edithuntfiles.CheckpointRVAdapter;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -36,6 +34,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -77,10 +76,13 @@ public class EditHuntFragment extends Fragment implements OnMapReadyCallback {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // map stuff
         mapView = binding.mapView;
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
+
+        // checkpoint list stuff
         adapter = new CheckpointRVAdapter((ArrayList<Checkpoint>) hunt.getCheckpoints().clone(), getActivity(), this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         recyclerView = binding.checkpointRV;
@@ -88,7 +90,6 @@ public class EditHuntFragment extends Fragment implements OnMapReadyCallback {
         recyclerView.setAdapter(adapter);
 
         // code from https://www.youtube.com/watch?v=cT9w4T9FCSQ
-        //recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.HORIZONTAL)); // adds divider between them
         ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT, 0) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -137,7 +138,17 @@ public class EditHuntFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void createCheckpoint() {
-        Checkpoint checkpoint = new Checkpoint(hunt, latlng.latitude, latlng.longitude, "", "desc", adapter.getItemCount());
+        BitmapDrawable bitmapdraw = (BitmapDrawable)getResources().getDrawable(R.drawable.yellowflag);
+        Bitmap smallMarker = Bitmap.createScaledBitmap(bitmapdraw.getBitmap(), 140, 168, false);
+        mMap.addMarker(
+                new MarkerOptions()
+                        .position(latlng)
+                        .title("Checkpoint")
+                        .icon(BitmapDescriptorFactory.fromBitmap(smallMarker))
+                        .anchor(0f, 0f));
+
+        Checkpoint checkpoint = new Checkpoint(hunt, latlng.latitude, latlng.longitude,
+                "", "desc", adapter.getItemCount(), Checkpoint.YELLOW);
         ArrayList<Hint> hints = new ArrayList<>();
         hints.add(new Hint("Sample Description"));
         hints.add(new Hint("Sample Description"));
@@ -167,6 +178,8 @@ public class EditHuntFragment extends Fragment implements OnMapReadyCallback {
             }
         }
         recyclerView.setAdapter(adapter);
+        mMap.clear(); // clear all markers from the map
+        showCurrentCheckpoints(); // add all remaining markers back
     }
 
     /**
@@ -183,17 +196,30 @@ public class EditHuntFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         getLocationPermission();
         mMap = googleMap;
+        mMap.setMinZoomPreference(15.0f);
+        mMap.setMaxZoomPreference(20.0f);
+        LatLngBounds wheatonBounds = new LatLngBounds(
+                new LatLng(41.867290, -88.101175), // SW bounds
+                new LatLng(41.873652, -88.093206)  // NE bounds
+        );
+        mMap.setLatLngBoundsForCameraTarget(wheatonBounds);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(wheatonBounds.getCenter(), 17));
+        showCurrentCheckpoints();
+    }
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        BitmapDrawable bitmapdraw = (BitmapDrawable)getResources().getDrawable(R.drawable.flag);
-        Bitmap smallMarker = Bitmap.createScaledBitmap(bitmapdraw.getBitmap(), 150, 180, false);
-        mMap.addMarker(
-                new MarkerOptions()
-                        .position(sydney)
-                        .title("Marker in Sydney")
-                        .icon(BitmapDescriptorFactory.fromBitmap(smallMarker)));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+    public void showCurrentCheckpoints() {
+        // for each checkpoint, add a marker on the map for it
+        for (Checkpoint cp : hunt.getCheckpoints()) {
+            latlng = new LatLng(cp.getLatitude(),cp.getLongitude());
+            BitmapDrawable bitmapdraw = (BitmapDrawable)getResources().getDrawable(cp.getColor());
+            Bitmap smallMarker = Bitmap.createScaledBitmap(bitmapdraw.getBitmap(), 140, 168, false);
+            mMap.addMarker(
+                    new MarkerOptions()
+                            .position(latlng)
+                            .title("Checkpoint")
+                            .icon(BitmapDescriptorFactory.fromBitmap(smallMarker))
+                            .anchor(0f, 0f));
+        }
     }
 
     private void getDeviceLocationForCheckpoint() {
@@ -210,15 +236,7 @@ public class EditHuntFragment extends Fragment implements OnMapReadyCallback {
                             System.out.println("got location!");
                             Location currentLocation = (Location) task.getResult();
                             latlng = new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude());
-                            BitmapDrawable bitmapdraw = (BitmapDrawable)getResources().getDrawable(R.drawable.flag);
-                            Bitmap smallMarker = Bitmap.createScaledBitmap(bitmapdraw.getBitmap(), 150, 180, false);
-                            mMap.addMarker(
-                                    new MarkerOptions()
-                                            .position(latlng)
-                                            .title("Checkpoint")
-                                            .icon(BitmapDescriptorFactory.fromBitmap(smallMarker))
-                                            .anchor(0f, 0f));
-                            //mMap.addMarker(new MarkerOptions().position(latlng).title("Checkpoint"));
+                            //latlng = new LatLng(41.8695436,-88.0960761); // mey sci location
                             createCheckpoint();
                             mMap.setMyLocationEnabled(false);
                         } else {

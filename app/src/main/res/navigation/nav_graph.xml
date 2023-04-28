@@ -11,7 +11,7 @@
         tools:layout="@layout/fragment_first"/>
     <fragment
         android:id="@+id/PlayHunt"
-        android:name="com.example.scavenger.PlayHunt"
+        android:name="com.example.scavenger.playhuntfiles.PlayHunt"
         tools:layout="@layout/fragment_play_hunt">
         <action
             android:id="@+id/action_PlayHunt_to_homeFragment2"
@@ -19,7 +19,7 @@
     </fragment>
     <activity
         android:id="@+id/Hint"
-        android:name="com.example.scavenger.HintWindow"
+        android:name="com.example.scavenger.playhuntfiles.HintWindow"
         android:label="@string/hint"
         tools:layout="@layout/hint_window"></activity>
     <fragment
@@ -27,9 +27,6 @@
         android:name="com.example.scavenger.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
-        <action
-            android:id="@+id/action_homeFragment2_to_PlayHunt"
-            app:destination="@id/PlayHunt" />
         <action
             android:id="@+id/action_homeFragment2_to_FirstFragment"
             app:destination="@id/FirstFragment" />
@@ -39,14 +36,17 @@
         <action
             android:id="@+id/action_homeFragment2_to_leaderboardMainFragment"
             app:destination="@id/leaderboardMainFragment" />
+        <action
+            android:id="@+id/action_homeFragment2_to_playHuntListFragment"
+            app:destination="@id/playHuntListFragment" />
     </fragment>
     <fragment
         android:id="@+id/createHuntSettingsFragment"
-        android:name="com.example.scavenger.CreateHuntSettingsFragment"
+        android:name="com.example.scavenger.edithuntfiles.CreateHuntSettingsFragment"
         android:label="CreateHuntSettingsFragment" />
     <fragment
         android:id="@+id/creatorHomePageFragment"
-        android:name="com.example.scavenger.CreatorHomePageFragment"
+        android:name="com.example.scavenger.edithuntfiles.CreatorHomePageFragment"
         android:label="fragment_creator_home_page"
         tools:layout="@layout/fragment_creator_home_page" >
         <action
@@ -58,12 +58,12 @@
     </fragment>
     <fragment
         android:id="@+id/editHuntFragment"
-        android:name="com.example.scavenger.EditHuntFragment"
+        android:name="com.example.scavenger.edithuntfiles.EditHuntFragment"
         android:label="fragment_edit_hunt"
         tools:layout="@layout/fragment_edit_hunt" />
     <fragment
         android:id="@+id/leaderboardMainFragment"
-        android:name="com.example.scavenger.LeaderboardMainFragment"
+        android:name="com.example.scavenger.leaderboardfiles.LeaderboardMainFragment"
         tools:layout="@layout/fragment_leaderboard_main">
         <action
             android:id="@+id/action_leaderboardMainFragment_to_leaderboardFragment"
@@ -71,7 +71,16 @@
     </fragment>
     <fragment
         android:id="@+id/leaderboardFragment"
-        android:name="com.example.scavenger.LeaderboardFragment"
+        android:name="com.example.scavenger.leaderboardfiles.LeaderboardFragment"
         tools:layout="@layout/fragment_leaderboard"/>
+    <fragment
+        android:id="@+id/playHuntListFragment"
+        android:name="com.example.scavenger.playhuntfiles.PlayHuntListFragment"
+        android:label="fragment_play_hunt_list"
+        tools:layout="@layout/fragment_play_hunt_list" >
+        <action
+            android:id="@+id/action_playHuntListFragment_to_PlayHunt"
+            app:destination="@id/PlayHunt" />
+    </fragment>
 
 </navigation>

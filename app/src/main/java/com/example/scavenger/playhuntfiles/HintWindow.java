@@ -1,8 +1,10 @@
-package com.example.scavenger;
+package com.example.scavenger.playhuntfiles;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+
+import com.example.scavenger.R;
 
 public class HintWindow extends Activity {
     protected void onCreate(Bundle savedInstanceState){

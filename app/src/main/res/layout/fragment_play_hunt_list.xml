@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".edithuntfiles.CreatorHomePageFragment"
+    tools:context=".playhuntfiles.PlayHuntListFragment"
     tools:ignore="HardcodedText">
 
     <LinearLayout
@@ -30,19 +30,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:text="My Scavenger Hunts"
+            android:text="Scavenger Hunts"
             android:textColor="@color/black"
             android:textSize="24sp"/>
 
-        <ImageView
-            android:id="@+id/newhuntimage"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginBottom="10dp"
-            android:src="@drawable/newhuntimage"/>
-
         <GridView
-            android:id="@+id/huntGV"
+            android:id="@+id/huntGVplayhuntlist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:numColumns="1"

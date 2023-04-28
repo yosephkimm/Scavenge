@@ -6,5 +6,5 @@
     android:id="@+id/map"
     map:mapType="normal"
     map:uiZoomControls="true"
-    tools:context=".MapDemo"
+    tools:context=".playhuntfiles.MapDemo"
     class ="com.google.android.gms.maps.SupportMapFragment" />

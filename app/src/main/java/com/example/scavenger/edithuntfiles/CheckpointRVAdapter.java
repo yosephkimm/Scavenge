@@ -1,29 +1,18 @@
-package com.example.scavenger;
+package com.example.scavenger.edithuntfiles;
 
 import android.app.Activity;
-import android.content.ClipData;
-import android.content.ClipDescription;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.view.DragEvent;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
-import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.scavenger.Checkpoint;
-import com.example.scavenger.CheckpointViewHolder;
 import com.example.scavenger.R;
 
 import java.util.ArrayList;
@@ -64,6 +53,7 @@ public class CheckpointRVAdapter extends RecyclerView.Adapter<CheckpointViewHold
         viewHolder.checknum.setText(text);
         CheckpointRVAdapter adapter = this;
         viewHolder.view.findViewById(R.id.cpcardview).setBackgroundColor(Color.TRANSPARENT);
+        viewHolder.flagimage.setImageResource(checkpoint.getColor());
 
         viewHolder.view.findViewById(R.id.editcptextview).setOnClickListener(new View.OnClickListener() {
             @Override
