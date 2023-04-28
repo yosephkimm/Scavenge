@@ -16,9 +16,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -47,6 +49,8 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.MappedByteBuffer;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -62,12 +66,14 @@ public class PlayHunt extends Fragment {
 
     private FragmentPlayHuntBinding binding;
     private ImageView imageView;
+
+
+    private Double time = 0.0;
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
-
         binding = FragmentPlayHuntBinding.inflate(inflater, container, false);
         FirebaseApp.initializeApp(requireContext());
 
@@ -110,6 +116,8 @@ public class PlayHunt extends Fragment {
                 imageView.setImageResource(R.drawable.ic_menu_gallery);
             }
         });
+
+
     }
 
 
