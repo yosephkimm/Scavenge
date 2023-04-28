@@ -58,6 +58,7 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".HintWindow"
             android:name=".playhuntfiles.HintWindow"
             android:theme="@style/Theme.Scavenger.TransparentTheme" />
         <activity
