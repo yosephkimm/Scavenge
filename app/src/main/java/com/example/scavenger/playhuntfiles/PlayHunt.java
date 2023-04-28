@@ -1,4 +1,4 @@
-package com.example.scavenger.playhuntfiles;
+package com.example.scavenger;
 
 import android.Manifest;
 import android.app.Activity;
@@ -35,6 +35,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.scavenger.Checkpoint;
 import com.example.scavenger.Hint;
+import com.example.scavenger.R;
 import com.example.scavenger.databinding.FragmentPlayHuntBinding;
 import com.example.scavenger.edithuntfiles.CheckpointRVAdapter;
 import com.example.scavenger.edithuntfiles.CreateHuntSettingsFragment;
@@ -304,7 +305,6 @@ public class PlayHunt extends Fragment {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             binding.capturedImage.setImageBitmap(imageBitmap);
-                    //BitmapFactory.decodeResource(getResources(), R.drawable.test_run);
             FirebaseStorage storage = FirebaseStorage.getInstance();
             StorageReference storageRef = storage.getReference();
 

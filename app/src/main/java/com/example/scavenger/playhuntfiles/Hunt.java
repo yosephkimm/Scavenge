@@ -1,4 +1,6 @@
-package com.example.scavenger;
+package com.example.scavenger.playhuntfiles;
+
+import com.example.scavenger.Checkpoint;
 
 import java.util.ArrayList;
 
@@ -24,6 +26,7 @@ public class Hunt {
      */
     private String creator;
 
+
     /**
      * An arraylist of all of the checkpoints of this hunt
      * @invariant checkpoints.size() <= maxCheckpoints
@@ -38,12 +41,15 @@ public class Hunt {
      */
     private final int maxCheckpoints = 10;
 
+    private boolean isPublished;
+
     public Hunt(String name, String description, String creator, String bgcolor) {
         this.name = name;
         this.desc = description;
         this.creator = creator;
         this.bgcolor = bgcolor;
         this.checkpoints = new ArrayList<>();
+        isPublished = false;
     }
 
     public Hunt() {
@@ -106,6 +112,18 @@ public class Hunt {
      */
     public ArrayList<Checkpoint> getCheckpoints() {
         return this.checkpoints;
+    }
+
+    public void publish() {
+        isPublished = true;
+    }
+
+    public void unlist() {
+        isPublished = false;
+    }
+
+    public boolean isPublished() {
+        return isPublished;
     }
 
 }
