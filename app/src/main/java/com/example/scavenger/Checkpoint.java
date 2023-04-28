@@ -1,5 +1,7 @@
 package com.example.scavenger;
 
+import com.google.android.gms.maps.model.Marker;
+
 import java.util.ArrayList;
 
 public class Checkpoint {
@@ -9,12 +11,22 @@ public class Checkpoint {
     private ArrayList<Hint> hints;
     private String description;
 
+    public static final int BLUE = R.drawable.blueflag;
+    public static final int RED = R.drawable.redflag;
+    public static final int PURPLE = R.drawable.purpleflag;
+    public static final int YELLOW = R.drawable.yellowflag;
+    public static final int BLACK = R.drawable.flag;
+
+    private Marker marker;
+
     private Hunt hunt;
 
     // the position of this checkpoint in the hunt
     private int position;
 
-    public Checkpoint(Hunt hunt, double latitude, double longitude, String imageUrl, String description, int position) {
+    private int color;
+
+    public Checkpoint(Hunt hunt, double latitude, double longitude, Marker marker, String imageUrl, String description, int position, int color) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.imageUrl = imageUrl;
@@ -22,6 +34,8 @@ public class Checkpoint {
         this.position = position;
         this.hints = new ArrayList<Hint>();
         this.hunt = hunt;
+        this.color = color;
+        this.marker = marker;
     }
 
     public Checkpoint() {}
@@ -95,5 +109,13 @@ public class Checkpoint {
     public void updateHint(int index, Hint hint) {
         hints.set(index, hint);
     }
+
+    public int getColor() {
+        return this.color;
+    }
+
+    public void setColor(int color) {this.color = color;}
+
+    public Marker getMarker() {return this.marker;}
 }
 

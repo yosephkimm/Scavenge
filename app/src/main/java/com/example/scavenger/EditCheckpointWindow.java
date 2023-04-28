@@ -22,6 +22,8 @@ public class EditCheckpointWindow extends Activity {
 
     private EditText descriptionbox;
 
+    private int color;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -33,7 +35,7 @@ public class EditCheckpointWindow extends Activity {
         int width = dm.widthPixels;
         int height = dm.heightPixels;
 
-        getWindow().setLayout((int) (width * .75), (int) (height * .6));
+        getWindow().setLayout((int) (width * .75), (int) (height * .85));
 
         descriptionbox = findViewById(R.id.editdescriptionbox);
         hint1box = findViewById(R.id.edithint1box);
@@ -52,9 +54,45 @@ public class EditCheckpointWindow extends Activity {
             }
         });
 
+        findViewById(R.id.canceleditcp).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+        findViewById(R.id.redflagimage).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                color = Checkpoint.RED;
+            }
+        });
+
+        findViewById(R.id.blueflagimage).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                color = Checkpoint.BLUE;
+            }
+        });
+
+        findViewById(R.id.yellowflagimage).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                color = Checkpoint.YELLOW;
+            }
+        });
+
+        findViewById(R.id.blackflagimage).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                color = Checkpoint.BLACK;
+            }
+        });
+
     }
 
     private void save(){
+        checkpoint.setColor(color);
         checkpoint.setDescription(String.valueOf(descriptionbox.getText()));
         checkpoint.getHints().get(0).setDescription(String.valueOf(hint1box.getText()));
         checkpoint.getHints().get(1).setDescription(String.valueOf(hint2box.getText()));
@@ -62,5 +100,6 @@ public class EditCheckpointWindow extends Activity {
         FirebaseFirestore.getInstance().collection("Hunts")
                 .document(checkpoint.getHunt().getName())
                 .update("checkpoints",checkpoint.getHunt().getCheckpoints());
+        finish();
     }
 }

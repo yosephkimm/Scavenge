@@ -87,6 +87,45 @@
             android:ems="15"
             android:gravity="start|top"
             android:inputType="textMultiLine" />
+        <GridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rowCount="2"
+            android:columnCount="2"
+            android:layout_gravity="center">
+            <ImageView
+                android:id="@+id/redflagimage"
+                android:layout_width="60dp"
+                android:layout_height="72dp"
+                android:clickable="true"
+                android:layout_margin="5dp"
+                android:src="@drawable/redflag"
+                android:focusable="true" />
+            <ImageView
+                android:id="@+id/blueflagimage"
+                android:layout_width="60dp"
+                android:layout_height="72dp"
+                android:clickable="true"
+                android:layout_margin="5dp"
+                android:src="@drawable/blueflag"
+                android:focusable="true" />
+            <ImageView
+                android:id="@+id/blackflagimage"
+                android:layout_width="60dp"
+                android:layout_height="72dp"
+                android:clickable="true"
+                android:layout_margin="5dp"
+                android:src="@drawable/flag"
+                android:focusable="true" />
+            <ImageView
+                android:id="@+id/yellowflagimage"
+                android:layout_width="60dp"
+                android:layout_height="72dp"
+                android:clickable="true"
+                android:layout_margin="5dp"
+                android:src="@drawable/yellowflag"
+                android:focusable="true" />
+        </GridLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"

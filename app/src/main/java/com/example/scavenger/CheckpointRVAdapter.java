@@ -6,6 +6,7 @@ import android.content.ClipDescription;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -64,6 +65,7 @@ public class CheckpointRVAdapter extends RecyclerView.Adapter<CheckpointViewHold
         viewHolder.checknum.setText(text);
         CheckpointRVAdapter adapter = this;
         viewHolder.view.findViewById(R.id.cpcardview).setBackgroundColor(Color.TRANSPARENT);
+        viewHolder.flagimage.setImageResource(checkpoint.getColor());
 
         viewHolder.view.findViewById(R.id.editcptextview).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +80,7 @@ public class CheckpointRVAdapter extends RecyclerView.Adapter<CheckpointViewHold
             @Override
             public void onClick(View view) {
                 int pos = checkpoint.getPosition();
+                checkpoint.getMarker().remove();
                 list.remove(checkpoint);
                 ((EditHuntFragment)currentFragment).refresh(adapter, pos);
             }
