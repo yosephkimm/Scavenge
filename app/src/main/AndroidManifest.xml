@@ -31,9 +31,6 @@
             android:exported="false"
             android:label="@string/title_activity_map_demo"
             android:theme="@style/Theme.Scavenger.NoActionBar" />
-        <activity
-            android:name=".LeaderboardActivity"
-            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.gms.version"

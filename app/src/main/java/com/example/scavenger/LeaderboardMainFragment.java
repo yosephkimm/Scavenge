@@ -75,6 +75,7 @@ public class LeaderboardMainFragment extends Fragment {
         getView().setBackgroundColor(getResources().getColor(R.color.avocado));
 
         displayLeaderboards();
+        huntGV = binding.huntGVleaderboard;
     }
 
     private void displayLeaderboards() {

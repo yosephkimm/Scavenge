@@ -10,4 +10,10 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
     </LinearLayout>
+    <GridView
+        android:id="@+id/huntGVleaderboard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:numColumns="1"
+        android:verticalSpacing="5dp"/>
 </FrameLayout>

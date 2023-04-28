@@ -66,7 +66,7 @@ public class HuntArrayAdapter extends ArrayAdapter<Hunt> {
      * @param hunt the Hunt that is being edited
      */
     private void leaderboardHunt(Hunt hunt) {
-        EditHuntFragment.hunt = hunt;
+        LeaderboardFragment.hunt = hunt;
         NavHostFragment.findNavController(currentFragment)
                 .navigate(R.id.action_leaderboardMainFragment_to_leaderboardFragment); // LeaderboardMainFragment to LeaderboardFragment
     }

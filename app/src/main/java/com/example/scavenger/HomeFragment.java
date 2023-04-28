@@ -116,6 +116,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void setProfilePic() {
+        /*
         if (account == null) return;
         FirebaseFirestore.getInstance().collection("Users")
                 .document(account.getEmail())
@@ -128,6 +129,8 @@ public class HomeFragment extends Fragment {
                         binding.profilepic.setVisibility(View.VISIBLE);
                     }
                 });
+                
+         */
     }
 
     @Override
