@@ -61,6 +61,7 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -96,7 +97,7 @@ public class PlayHunt extends Fragment {
     private RecyclerView recyclerView;
     private TextView timeTV;
 
-    private long endTime;
+    private double endTime;
 
     @Override
     public View onCreateView(
@@ -170,16 +171,21 @@ public class PlayHunt extends Fragment {
         timeTV.setText("0");
         final Handler handler = new Handler();
         handler.post(new Runnable() {
-            int i = 0;
+            double i = 0;
             @Override
             public void run() {
-                i++;
-                timeTV.setText(String.valueOf(i));
-                handler.postDelayed(this, 1000);
+                i+=0.01;
+                DecimalFormat df = new DecimalFormat("#.#");
+                timeTV.setText(String.valueOf(Double.parseDouble(df.format(i))));
+                handler.postDelayed(this, 10);
             }
         });
 
+    }
 
+    public void displayHints() {
+        startActivity(new Intent(getActivity(), HintWindow.class));
+        ((Activity) getActivity()).overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_in);
     }
 
     private void checkLocation() {
@@ -199,7 +205,7 @@ public class PlayHunt extends Fragment {
                                 if (currentCheckpoint.getPosition() == hunt.getCheckpoints().size()-1) {
                                     // the user has completed the hunt!
                                     // stop the time
-                                    endTime = Long.parseLong((String) timeTV.getText());
+                                    endTime = Double.parseDouble((String) timeTV.getText());
                                     // create a new PlayerTime object and add it to the database
                                     updatePlayerTime(endTime);
                                     // display something that says "Nice job! You did it!"
@@ -223,14 +229,14 @@ public class PlayHunt extends Fragment {
         }
     }
 
-    private void updatePlayerTime(long endTime) {
+    private void updatePlayerTime(double endTime) {
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
         gsc = GoogleSignIn.getClient(getActivity(),gso);
         GoogleSignInAccount account=GoogleSignIn.getLastSignedInAccount(getActivity());
 
-        PlayerTime playerTime = new PlayerTime(hunt.getName(), account.getEmail(),endTime);
+        PlayerTime playerTime = new PlayerTime( account.getDisplayName(),hunt.getName(),endTime);
 
         FirebaseFirestore firestoreDatabase = FirebaseFirestore.getInstance();
         DocumentReference dbPlayerTimes = firestoreDatabase.collection("PlayerLeaderboardTimes").document();

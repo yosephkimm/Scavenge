@@ -9,8 +9,16 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.example.scavenger.Checkpoint;
+import com.example.scavenger.Hunt;
 import com.example.scavenger.R;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class EditCheckpointWindow extends Activity {
 
@@ -25,6 +33,8 @@ public class EditCheckpointWindow extends Activity {
     private EditText descriptionbox;
 
     private int color;
+
+    private int checkpointCount;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,5 +113,30 @@ public class EditCheckpointWindow extends Activity {
                 .document(checkpoint.getHunt().getName())
                 .update("checkpoints",checkpoint.getHunt().getCheckpoints());
         finish();
+    }
+
+    private void getCheckpointCount() {
+        FirebaseFirestore.getInstance().collection("Hunts").get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                        if (!queryDocumentSnapshots.isEmpty()) {
+                            List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                            ArrayList<Hunt> huntArrayList = new ArrayList<Hunt>();
+                            for (DocumentSnapshot d : list) {
+                                huntArrayList.add(d.toObject(Hunt.class));
+                            }
+                            int counter = 0;
+                            for (Hunt hunt : huntArrayList) {
+                                counter += hunt.getCheckpoints().size();
+                            }
+                            checkpointCount = counter;
+                        } else {
+                            System.out.println("Hunts database collection is empty!");
+                            // maybe display something that says "user has no hunts created yet"?
+                        }
+                    }
+                });
     }
 }

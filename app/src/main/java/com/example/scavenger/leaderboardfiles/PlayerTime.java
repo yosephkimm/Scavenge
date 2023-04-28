@@ -2,7 +2,7 @@ package com.example.scavenger.leaderboardfiles;
 
 public class PlayerTime {
     private String playerId, huntId;
-    private long time;
+    private double time;
 
     /**
      * Constructor
@@ -10,7 +10,7 @@ public class PlayerTime {
      * @param huntId Id of hunt
      * @param time Time player completed the hunt
      */
-    public PlayerTime(String playerId, String huntId, long time) {
+    public PlayerTime(String playerId, String huntId, double time) {
         this.playerId = playerId;
         this.huntId = huntId;
         this.time = time;
@@ -37,5 +37,5 @@ public class PlayerTime {
      * Getter for time
      * @return Time player completed the hunt
      */
-    public long getTime() { return time; }
+    public double getTime() { return time; }
 }

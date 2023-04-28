@@ -137,14 +137,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="cancel"
-                android:layout_margin="10dp"/>
+                android:layout_margin="10dp"
+                android:backgroundColor="@color/black"/>
 
             <Button
                 android:id="@+id/doneeditcp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="done"
-                android:layout_margin="10dp"/>
+                android:layout_margin="10dp"
+                android:backgroundColor="@color/black"/>
+
+            <Button
+                android:id="@+id/capture_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="image"
+                android:layout_margin="10dp"
+                android:backgroundColor="@color/black"/>
         </LinearLayout>
 
 

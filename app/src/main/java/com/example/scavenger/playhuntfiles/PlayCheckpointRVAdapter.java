@@ -1,6 +1,8 @@
 package com.example.scavenger.playhuntfiles;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,6 +52,13 @@ public class PlayCheckpointRVAdapter extends RecyclerView.Adapter<PlayCheckpoint
         viewHolder.view.findViewById(R.id.cpcardviewplayhunt).setBackgroundColor(Color.TRANSPARENT);
         viewHolder.flagimage.setImageResource(checkpoint.getColor());
         viewHolder.checknum.setText((position + 1) + "");
+
+        viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((PlayHunt)currentFragment).displayHints();
+            }
+        });
     }
 
     @Override

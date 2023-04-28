@@ -3,6 +3,9 @@ package com.example.scavenger.playhuntfiles;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.View;
+
+import androidx.annotation.NonNull;
 
 import com.example.scavenger.R;
 
@@ -21,5 +24,7 @@ public class HintWindow extends Activity {
         getWindow().setLayout((int)(width*.71), (int)(height*.5));
 
     }
+
+
 
 }
