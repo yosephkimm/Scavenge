@@ -1,7 +1,6 @@
-package com.example.scavenger;
+package com.example.scavenger.edithuntfiles;
 
 import android.Manifest;
-import android.content.ClipData;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -12,8 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,13 +18,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
 import android.widget.Toast;
 
-import com.example.scavenger.databinding.FragmentCreatorHomePageBinding;
+import com.example.scavenger.Checkpoint;
+import com.example.scavenger.Hint;
+import com.example.scavenger.Hunt;
+import com.example.scavenger.R;
 import com.example.scavenger.databinding.FragmentEditHuntBinding;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.example.scavenger.edithuntfiles.CheckpointRVAdapter;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -142,14 +140,14 @@ public class EditHuntFragment extends Fragment implements OnMapReadyCallback {
     private void createCheckpoint() {
         BitmapDrawable bitmapdraw = (BitmapDrawable)getResources().getDrawable(R.drawable.yellowflag);
         Bitmap smallMarker = Bitmap.createScaledBitmap(bitmapdraw.getBitmap(), 140, 168, false);
-        Marker marker = mMap.addMarker(
+        mMap.addMarker(
                 new MarkerOptions()
                         .position(latlng)
                         .title("Checkpoint")
                         .icon(BitmapDescriptorFactory.fromBitmap(smallMarker))
                         .anchor(0f, 0f));
 
-        Checkpoint checkpoint = new Checkpoint(hunt, latlng.latitude, latlng.longitude, marker,
+        Checkpoint checkpoint = new Checkpoint(hunt, latlng.latitude, latlng.longitude,
                 "", "desc", adapter.getItemCount(), Checkpoint.YELLOW);
         ArrayList<Hint> hints = new ArrayList<>();
         hints.add(new Hint("Sample Description"));
@@ -180,6 +178,8 @@ public class EditHuntFragment extends Fragment implements OnMapReadyCallback {
             }
         }
         recyclerView.setAdapter(adapter);
+        mMap.clear(); // clear all markers from the map
+        showCurrentCheckpoints(); // add all remaining markers back
     }
 
     /**
@@ -207,7 +207,7 @@ public class EditHuntFragment extends Fragment implements OnMapReadyCallback {
         showCurrentCheckpoints();
     }
 
-    private void showCurrentCheckpoints() {
+    public void showCurrentCheckpoints() {
         // for each checkpoint, add a marker on the map for it
         for (Checkpoint cp : hunt.getCheckpoints()) {
             latlng = new LatLng(cp.getLatitude(),cp.getLongitude());
@@ -235,8 +235,8 @@ public class EditHuntFragment extends Fragment implements OnMapReadyCallback {
                         if (task.isSuccessful()) {
                             System.out.println("got location!");
                             Location currentLocation = (Location) task.getResult();
-                            //latlng = new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude());
-                            latlng = new LatLng(41.8695436,-88.0960761); // mey sci location
+                            latlng = new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude());
+                            //latlng = new LatLng(41.8695436,-88.0960761); // mey sci location
                             createCheckpoint();
                             mMap.setMyLocationEnabled(false);
                         } else {

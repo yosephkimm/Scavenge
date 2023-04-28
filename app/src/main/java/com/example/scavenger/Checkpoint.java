@@ -17,7 +17,6 @@ public class Checkpoint {
     public static final int YELLOW = R.drawable.yellowflag;
     public static final int BLACK = R.drawable.flag;
 
-    private Marker marker;
 
     private Hunt hunt;
 
@@ -26,7 +25,7 @@ public class Checkpoint {
 
     private int color;
 
-    public Checkpoint(Hunt hunt, double latitude, double longitude, Marker marker, String imageUrl, String description, int position, int color) {
+    public Checkpoint(Hunt hunt, double latitude, double longitude, String imageUrl, String description, int position, int color) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.imageUrl = imageUrl;
@@ -35,7 +34,6 @@ public class Checkpoint {
         this.hints = new ArrayList<Hint>();
         this.hunt = hunt;
         this.color = color;
-        this.marker = marker;
     }
 
     public Checkpoint() {}
@@ -115,7 +113,5 @@ public class Checkpoint {
     }
 
     public void setColor(int color) {this.color = color;}
-
-    public Marker getMarker() {return this.marker;}
 }
 

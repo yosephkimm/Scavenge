@@ -25,7 +25,7 @@ https://www.geeksforgeeks.org/gridview-in-android-with-example/# -->
             <ImageView
                 android:id="@+id/huntcardbg"
                 android:layout_width="match_parent"
-                android:layout_height="120dp"
+                android:layout_height="130dp"
                 android:src="@drawable/redbg"
                 android:scaleType="centerCrop" />
 

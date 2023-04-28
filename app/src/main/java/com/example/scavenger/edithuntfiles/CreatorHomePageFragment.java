@@ -1,4 +1,4 @@
-package com.example.scavenger;
+package com.example.scavenger.edithuntfiles;
 
 import android.os.Bundle;
 
@@ -11,9 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 
+import com.example.scavenger.Hunt;
+import com.example.scavenger.R;
 import com.example.scavenger.databinding.FragmentCreatorHomePageBinding;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;

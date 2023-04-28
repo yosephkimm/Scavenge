@@ -1,19 +1,17 @@
-package com.example.scavenger;
+package com.example.scavenger.playhuntfiles;
 
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 
-import com.example.scavenger.databinding.FragmentCreatorHomePageBinding;
+import com.example.scavenger.Hunt;
 import com.example.scavenger.databinding.FragmentPlayHuntListBinding;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -52,7 +50,7 @@ public class PlayHuntListFragment extends Fragment {
 
                         if (!queryDocumentSnapshots.isEmpty()) {
                             List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
-                            ArrayList<Hunt> huntArrayList = new ArrayList<Hunt>();
+                            ArrayList<Hunt> huntArrayList = new ArrayList<>();
                             for (DocumentSnapshot d : list) {
                                 huntArrayList.add(d.toObject(Hunt.class));
                             }

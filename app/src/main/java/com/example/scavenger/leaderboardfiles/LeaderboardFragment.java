@@ -1,4 +1,4 @@
-package com.example.scavenger;
+package com.example.scavenger.leaderboardfiles;
 
 import android.os.Bundle;
 
@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.scavenger.Hunt;
+import com.example.scavenger.R;
 import com.example.scavenger.databinding.FragmentLeaderboardBinding;
 
 public class LeaderboardFragment extends Fragment {

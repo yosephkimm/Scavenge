@@ -1,4 +1,4 @@
-package com.example.scavenger;
+package com.example.scavenger.edithuntfiles;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,8 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.EditText;
 
+import com.example.scavenger.Checkpoint;
+import com.example.scavenger.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class EditCheckpointWindow extends Activity {

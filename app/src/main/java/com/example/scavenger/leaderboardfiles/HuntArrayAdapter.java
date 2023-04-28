@@ -1,4 +1,4 @@
-package com.example.scavenger;
+package com.example.scavenger.leaderboardfiles;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -15,8 +15,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.example.scavenger.Hunt;
+import com.example.scavenger.R;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.example.scavenger;
+package com.example.scavenger.edithuntfiles;
 
 import android.media.Image;
 import android.view.View;
@@ -6,6 +6,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.scavenger.R;
 
 public class CheckpointViewHolder extends RecyclerView.ViewHolder {
 
