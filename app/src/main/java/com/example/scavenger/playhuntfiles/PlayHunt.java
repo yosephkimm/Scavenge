@@ -248,6 +248,11 @@ public class PlayHunt extends Fragment {
         }
     }
 
+    public void displayHints() {
+        startActivity(new Intent(getActivity(), HintWindow.class));
+        ((Activity) getActivity()).overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_in);
+    }
+
     private void updatePlayerTime(long endTime) {
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
