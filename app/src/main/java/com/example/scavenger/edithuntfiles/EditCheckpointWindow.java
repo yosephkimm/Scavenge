@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.example.scavenger.Checkpoint;
-import com.example.scavenger.Hunt;
+import com.example.scavenger.playhuntfiles.Hunt;
 import com.example.scavenger.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -52,7 +52,7 @@ public class EditCheckpointWindow extends Activity {
         int width = dm.widthPixels;
         int height = dm.heightPixels;
 
-        getWindow().setLayout((int) (width * .75), (int) (height * .85));
+        getWindow().setLayout((int) (width * .75), (int) (height * .9));
 
         descriptionbox = findViewById(R.id.editdescriptionbox);
         hint1box = findViewById(R.id.edithint1box);

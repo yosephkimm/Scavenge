@@ -49,7 +49,6 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         getView().setBackgroundColor(getResources().getColor(R.color.avocado));
 
-
         // set play button to go to playhunt fragment
         binding.playbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,7 +115,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void setProfilePic() {
-        /*
+/*
         if (account == null) return;
         FirebaseFirestore.getInstance().collection("Users")
                 .document(account.getEmail())
@@ -130,7 +129,7 @@ public class HomeFragment extends Fragment {
                     }
                 });
                 
-         */
+*/
     }
 
     @Override

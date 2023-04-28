@@ -41,7 +41,7 @@ public class Hunt {
      */
     private final int maxCheckpoints = 10;
 
-    private boolean isPublished;
+    private boolean published;
 
     public Hunt(String name, String description, String creator, String bgcolor) {
         this.name = name;
@@ -49,7 +49,7 @@ public class Hunt {
         this.creator = creator;
         this.bgcolor = bgcolor;
         this.checkpoints = new ArrayList<>();
-        isPublished = false;
+        this.published = false;
     }
 
     public Hunt() {
@@ -114,16 +114,10 @@ public class Hunt {
         return this.checkpoints;
     }
 
-    public void publish() {
-        isPublished = true;
-    }
+    public void setPublished() {this.published = true;}
 
-    public void unlist() {
-        isPublished = false;
-    }
-
-    public boolean isPublished() {
-        return isPublished;
+    public boolean getPublished() {
+        return this.published;
     }
 
 }

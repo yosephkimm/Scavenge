@@ -9,9 +9,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.scavenger.LoginDialogueFragment;
 import com.example.scavenger.playhuntfiles.Hunt;
 import com.example.scavenger.R;
 import com.google.firebase.firestore.CollectionReference;
@@ -83,7 +85,7 @@ public class HuntGVAdapter extends ArrayAdapter<Hunt> {
     private void editHunt(Hunt hunt) {
         FirebaseFirestore.getInstance().collection("Hunts")
                 .document(hunt.getName())
-                .update("isPublished", false);
+                .update("published", false);
         EditHuntFragment.hunt = hunt;
         NavHostFragment.findNavController(currentFragment)
                 .navigate(R.id.action_creatorHomePageFragment_to_editHuntFragment);
@@ -104,7 +106,9 @@ public class HuntGVAdapter extends ArrayAdapter<Hunt> {
     private void publishHunt(Hunt hunt) {
         FirebaseFirestore.getInstance().collection("Hunts")
                 .document(hunt.getName())
-                .update("isPublished", true);
+                .update("published", true);
+        DialogFragment newFragment = new PublishDialogueFragment();
+        newFragment.show(currentFragment.getFragmentManager(), "game");
     }
 
 }

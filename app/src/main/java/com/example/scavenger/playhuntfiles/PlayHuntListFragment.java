@@ -51,7 +51,9 @@ public class PlayHuntListFragment extends Fragment {
                             List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
                             ArrayList<Hunt> huntArrayList = new ArrayList<>();
                             for (DocumentSnapshot d : list) {
-                                if (d.toObject(Hunt.class).isPublished())
+                                System.out.println("creator: " + (d.toObject(Hunt.class).getCreator()));
+                                System.out.println("published: " + (d.toObject(Hunt.class).getPublished()));
+                                if ((d.toObject(Hunt.class).getPublished()))
                                     huntArrayList.add(d.toObject(Hunt.class));
                             }
                             adapter = new PlayHuntListGVAdapter(getActivity(), huntArrayList, PlayHuntListFragment.this);

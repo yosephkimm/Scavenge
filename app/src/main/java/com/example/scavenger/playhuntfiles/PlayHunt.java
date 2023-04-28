@@ -1,4 +1,4 @@
-package com.example.scavenger;
+package com.example.scavenger.playhuntfiles;
 
 import android.Manifest;
 import android.app.Activity;
@@ -23,11 +23,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.scavenger.Hunt;
+import com.example.scavenger.LoginDialogueFragment;
+import com.example.scavenger.playhuntfiles.Hunt;
 import com.example.scavenger.R;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -225,6 +227,8 @@ public class PlayHunt extends Fragment {
                                     // create a new PlayerTime object and add it to the database
                                     updatePlayerTime(endTime);
                                     // display something that says "Nice job! You did it!"
+                                    DialogFragment newFragment = new HuntCompleteDialogueFragment(endTime);
+                                    newFragment.show(getFragmentManager(), "game");
                                     System.out.println("finished with time: " + endTime);
                                 } else {
                                     currentCheckpoint = hunt.getCheckpoints().get(currentCheckpoint.getPosition()+1);
@@ -258,7 +262,7 @@ public class PlayHunt extends Fragment {
         gsc = GoogleSignIn.getClient(getActivity(),gso);
         GoogleSignInAccount account=GoogleSignIn.getLastSignedInAccount(getActivity());
 
-        PlayerTime playerTime = new PlayerTime(hunt.getName(), account.getEmail(),endTime);
+        PlayerTime playerTime = new PlayerTime(account.getDisplayName(),hunt.getName(), endTime);
 
         FirebaseFirestore firestoreDatabase = FirebaseFirestore.getInstance();
         DocumentReference dbPlayerTimes = firestoreDatabase.collection("PlayerLeaderboardTimes").document();
