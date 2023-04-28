@@ -22,11 +22,6 @@
         android:name="com.example.scavenger.HintWindow"
         android:label="@string/hint"
         tools:layout="@layout/hint_window"></activity>
-    <activity
-        android:id="@+id/Leaderboard"
-        android:name="com.example.scavenger.LeaderboardActivity"
-        android:label="Leaderboard"
-        tools:layout="@layout/activity_leaderboard"></activity>
     <fragment
         android:id="@+id/homeFragment2"
         android:name="com.example.scavenger.HomeFragment"
@@ -41,6 +36,9 @@
         <action
             android:id="@+id/action_homeFragment2_to_creatorHomePageFragment"
             app:destination="@id/creatorHomePageFragment" />
+        <action
+            android:id="@+id/action_homeFragment2_to_leaderboardMainFragment"
+            app:destination="@id/leaderboardMainFragment" />
     </fragment>
     <fragment
         android:id="@+id/createHuntSettingsFragment"
@@ -63,5 +61,17 @@
         android:name="com.example.scavenger.EditHuntFragment"
         android:label="fragment_edit_hunt"
         tools:layout="@layout/fragment_edit_hunt" />
+    <fragment
+        android:id="@+id/leaderboardMainFragment"
+        android:name="com.example.scavenger.LeaderboardMainFragment"
+        tools:layout="@layout/fragment_leaderboard_main">
+        <action
+            android:id="@+id/action_leaderboardMainFragment_to_leaderboardFragment"
+            app:destination="@id/leaderboardFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/leaderboardFragment"
+        android:name="com.example.scavenger.LeaderboardFragment"
+        tools:layout="@layout/fragment_leaderboard"/>
 
 </navigation>

@@ -28,7 +28,7 @@ public class LeaderboardMainFragment extends Fragment {
 
     private FragmentLeaderboardMainBinding binding;
 
-    private SearchView huntSV;
+    private GridView huntGV;
 
     HuntArrayAdapter adapter;
 
@@ -45,10 +45,10 @@ public class LeaderboardMainFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         getActivity().getMenuInflater().inflate(R.menu.actionbar_menu, menu);
         MenuItem menuItem = menu.findItem(R.id.search);
-        huntSV = (SearchView) menuItem.getActionView();
-        huntSV.setQueryHint("Search here");
+        SearchView searchView = (SearchView) menuItem.getActionView();
+        searchView.setQueryHint("Search here");
 
-        huntSV.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
@@ -60,6 +60,8 @@ public class LeaderboardMainFragment extends Fragment {
                 return false;
             }
         });
+
+        menuItem.setVisible(true);
     }
 
     @Override
@@ -91,7 +93,7 @@ public class LeaderboardMainFragment extends Fragment {
                                     huntArrayList.add(d.toObject(Hunt.class));
                             }
                             adapter = new HuntArrayAdapter(getActivity(), huntArrayList, LeaderboardMainFragment.this);
-                            huntSV.setAdapter(adapter);
+                            huntGV.setAdapter(adapter);
                         } else {
                             System.out.println("Hunts database collection is empty!");
                             // maybe display something that says "no hunts created yet"?

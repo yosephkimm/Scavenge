@@ -35,15 +35,16 @@ public class HuntArrayAdapter extends ArrayAdapter<Hunt> {
         View listItemView = convertView;
         if (listItemView == null) {
             // Layout Inflater inflates each item to be displayed in GridView.
-            listItemView = LayoutInflater.from(getContext()).inflate(R.layout.hunt_card_view, parent, false);
+            listItemView = LayoutInflater.from(getContext()).inflate(R.layout.leaderboard_card_view, parent, false);
         }
 
         // get the hunt and set the hunt name and description text
         Hunt hunt = getItem(position);
         TextView huntnameTV = listItemView.findViewById(R.id.huntname);
         TextView huntdescTV = listItemView.findViewById(R.id.huntdesc);
+        TextView creatoremailTV = listItemView.findViewById(R.id.creatoremail);
         ImageView cardbg = listItemView.findViewById(R.id.huntcardbg);
-        listItemView.findViewById(R.id.edithuntbutton).setOnClickListener(new View.OnClickListener() {
+        listItemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 leaderboardHunt(hunt);
@@ -52,6 +53,7 @@ public class HuntArrayAdapter extends ArrayAdapter<Hunt> {
 
         huntnameTV.setText(hunt.getName());
         huntdescTV.setText(hunt.getDesc());
+        creatoremailTV.setText("Made by " + hunt.getCreator());
         if (hunt.getbgcolor().equalsIgnoreCase("Blue")) cardbg.setImageResource(R.drawable.bluebg);
         else if (hunt.getbgcolor().equalsIgnoreCase("Orange")) cardbg.setImageResource(R.drawable.orangebg);
         else cardbg.setImageResource(R.drawable.redbg);
@@ -66,7 +68,7 @@ public class HuntArrayAdapter extends ArrayAdapter<Hunt> {
     private void leaderboardHunt(Hunt hunt) {
         EditHuntFragment.hunt = hunt;
         NavHostFragment.findNavController(currentFragment)
-                .navigate(R.id.); // LeaderboardMainFragment to LeaderboardFragment
+                .navigate(R.id.action_leaderboardMainFragment_to_leaderboardFragment); // LeaderboardMainFragment to LeaderboardFragment
     }
 
 }
