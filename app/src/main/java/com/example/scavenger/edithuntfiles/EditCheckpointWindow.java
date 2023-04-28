@@ -3,7 +3,10 @@ package com.example.scavenger.edithuntfiles;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.EditText;
@@ -11,6 +14,8 @@ import android.widget.EditText;
 import com.example.scavenger.Checkpoint;
 import com.example.scavenger.R;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class EditCheckpointWindow extends Activity {
 
@@ -90,9 +95,23 @@ public class EditCheckpointWindow extends Activity {
                 color = Checkpoint.BLACK;
             }
         });
+        findViewById(R.id.captureImage).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivityForResult(new Intent(MediaStore.ACTION_IMAGE_CAPTURE),105);
+            }
+        });
 
     }
-
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 105 && resultCode == Activity.RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference storageRef = storage.getReference();
+            StorageReference imageRef = storageRef.child("images/image"+  +".jpg");
+    }
     private void save(){
         checkpoint.setColor(color);
         checkpoint.setDescription(String.valueOf(descriptionbox.getText()));

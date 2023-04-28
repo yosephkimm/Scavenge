@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.scavenger.leaderboardfiles.PlayerTime;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 

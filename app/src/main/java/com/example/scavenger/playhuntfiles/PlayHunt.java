@@ -1,4 +1,4 @@
-package com.example.scavenger;
+package com.example.scavenger.playhuntfiles;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -22,6 +22,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.scavenger.Hunt;
+import com.example.scavenger.R;
 import com.example.scavenger.databinding.FragmentPlayHuntBinding;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -54,6 +56,7 @@ import okhttp3.OkHttpClient;
 
 public class PlayHunt extends Fragment {
 
+    public static Hunt hunt;
     private FragmentPlayHuntBinding binding;
     private ImageView imageView;
 
@@ -115,6 +118,7 @@ public class PlayHunt extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         if (requestCode == 105 && resultCode == Activity.RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
@@ -124,7 +128,7 @@ public class PlayHunt extends Fragment {
 
 
             // Create a reference to the image file in Firebase Storage
-            StorageReference imageRef = storageRef.child("images/image.jpg");
+            StorageReference imageRef = storageRef.child("images/image+.jpg");
             StorageReference imageTest = storageRef.child("images/test_run.jpg");
 
             //UPDATE
