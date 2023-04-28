@@ -1,14 +1,17 @@
-package com.example.scavenger.playhuntfiles;
+package com.example.scavenger;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.location.Location;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
@@ -16,17 +19,42 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.scavenger.Hunt;
+import com.example.scavenger.R;
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.scavenger.Checkpoint;
+import com.example.scavenger.Hint;
 import com.example.scavenger.R;
 import com.example.scavenger.databinding.FragmentPlayHuntBinding;
+import com.example.scavenger.edithuntfiles.CheckpointRVAdapter;
+import com.example.scavenger.edithuntfiles.CreateHuntSettingsFragment;
+import com.example.scavenger.edithuntfiles.EditHuntFragment;
+import com.example.scavenger.leaderboardfiles.PlayerTime;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -39,6 +67,9 @@ import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
@@ -51,19 +82,45 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 
 public class PlayHunt extends Fragment {
 
     private FragmentPlayHuntBinding binding;
     private ImageView imageView;
+    private GoogleSignInOptions gso; // for sign in process
+    private GoogleSignInClient gsc; // for sign in process
 
-    static Hunt hunt;
+
     private String link;
     private String check;
     private String temp[];
     private JSONObject one;
     private JSONObject two;
+    public static Hunt hunt;
+
+    private Checkpoint currentCheckpoint;
+
+    private Boolean mLocationPermissionsGranted = false;
+
+    private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
+    private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
+
+    private FusedLocationProviderClient mFusedLocationProviderClient;
+
+    private PlayCheckpointRVAdapter adapter;
+
+    private RecyclerView recyclerView;
+    private TextView timeTV;
+
+    private long endTime;
+
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
@@ -80,13 +137,26 @@ public class PlayHunt extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-            binding.buttonHint.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    startActivity(new Intent(getActivity(), HintWindow.class));
-                    ((Activity) getActivity()).overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_in);
-                }
-            });
+
+        // checkpoint list stuff
+        currentCheckpoint = hunt.getCheckpoints().get(0); // get the first checkpoint
+        ArrayList<Checkpoint> initial = new ArrayList<>();
+        initial.add(currentCheckpoint);
+        adapter = new PlayCheckpointRVAdapter((ArrayList<Checkpoint>) initial, getActivity(), this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerView = binding.checkpointRVplayhunt;
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+
+        imageView = binding.capturedImage;
+
+        binding.buttonHint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), HintWindow.class));
+                ((Activity) getActivity()).overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_in);
+            }
+        });
         binding.buttonQuit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -110,10 +180,126 @@ public class PlayHunt extends Fragment {
         binding.buttonConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                imageView.setImageResource(android.R.drawable.ic_menu_gallery);
+                imageView.setImageResource(R.drawable.ic_menu_gallery);
             }
         });
+        binding.buttonCheckloc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkLocation();
+            }
+        });
+
+        // start the timer at 0 counting up
+        timeTV = binding.timer;
+        timeTV.setText("0");
+        final Handler handler = new Handler();
+        handler.post(new Runnable() {
+            int i = 0;
+            @Override
+            public void run() {
+                i++;
+                timeTV.setText(String.valueOf(i));
+                handler.postDelayed(this, 1000);
+            }
+        });
+
+
     }
+
+    private void checkLocation() {
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
+        try {
+            if (mLocationPermissionsGranted) {
+                Task<Location> locationTask = mFusedLocationProviderClient.getLastLocation();
+                locationTask.addOnCompleteListener(new OnCompleteListener<Location>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Location> task) {
+                        if (task.isSuccessful()) {
+                            System.out.println("got location!");
+                            Location currentLocation = (Location) task.getResult();
+                            // if the player is within 6 feet of the checkpoint, they can move on to the next one!
+                            if (Math.abs(currentCheckpoint.getLatitude()-currentLocation.getLatitude()) <= 0.001
+                                    && Math.abs(currentCheckpoint.getLongitude()-currentLocation.getLongitude()) <= 0.001) {
+                                if (currentCheckpoint.getPosition() == hunt.getCheckpoints().size()-1) {
+                                    // the user has completed the hunt!
+                                    // stop the time
+                                    endTime = Long.parseLong((String) timeTV.getText());
+                                    // create a new PlayerTime object and add it to the database
+                                    updatePlayerTime(endTime);
+                                    // display something that says "Nice job! You did it!"
+                                    System.out.println("finished with time: " + endTime);
+                                } else {
+                                    currentCheckpoint = hunt.getCheckpoints().get(currentCheckpoint.getPosition()+1);
+                                    updateProgress(currentCheckpoint);
+                                }
+
+                            }
+                        } else {
+                            Toast.makeText(getContext(), "unable to get current location", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            } else {
+                getLocationPermission();
+            }
+        } catch (SecurityException e) {
+            System.out.println("security exception");
+        }
+    }
+
+    public void displayHints() {
+        startActivity(new Intent(getActivity(), HintWindow.class));
+        ((Activity) getActivity()).overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_in);
+    }
+
+    private void updatePlayerTime(long endTime) {
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        gsc = GoogleSignIn.getClient(getActivity(),gso);
+        GoogleSignInAccount account=GoogleSignIn.getLastSignedInAccount(getActivity());
+
+        PlayerTime playerTime = new PlayerTime(hunt.getName(), account.getEmail(),endTime);
+
+        FirebaseFirestore firestoreDatabase = FirebaseFirestore.getInstance();
+        DocumentReference dbPlayerTimes = firestoreDatabase.collection("PlayerLeaderboardTimes").document();
+        dbPlayerTimes.set(playerTime)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+
+                    }
+                });
+
+    }
+
+    private void getLocationPermission(){
+        String[] permissions = {android.Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION};
+
+        if(ContextCompat.checkSelfPermission(getContext(),
+                FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+            if(ContextCompat.checkSelfPermission(getContext(),
+                    COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+                mLocationPermissionsGranted = true;
+            } else {
+                ActivityCompat.requestPermissions(getActivity(),
+                        permissions,
+                        LOCATION_PERMISSION_REQUEST_CODE);
+            }
+        }else {
+            ActivityCompat.requestPermissions(getActivity(),
+                    permissions,
+                    LOCATION_PERMISSION_REQUEST_CODE);
+        }
+    }
+
+    private void updateProgress(Checkpoint checkpoint) {
+        adapter.add(checkpoint);
+        recyclerView.setAdapter(adapter);
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
