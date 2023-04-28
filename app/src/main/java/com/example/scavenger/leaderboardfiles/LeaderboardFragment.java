@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 
 import com.example.scavenger.Hunt;
-import com.example.scavenger.PlayerTimeAdapter;
 import com.example.scavenger.R;
 import com.example.scavenger.databinding.FragmentLeaderboardBinding;
 import com.google.android.gms.tasks.OnSuccessListener;

@@ -128,7 +128,7 @@ public class PlayHunt extends Fragment {
 
 
             // Create a reference to the image file in Firebase Storage
-            StorageReference imageRef = storageRef.child("images/image+.jpg");
+            StorageReference imageRef = storageRef.child("images/image.jpg");
             StorageReference imageTest = storageRef.child("images/test_run.jpg");
 
             //UPDATE

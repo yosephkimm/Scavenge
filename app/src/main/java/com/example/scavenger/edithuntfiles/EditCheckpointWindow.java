@@ -95,7 +95,7 @@ public class EditCheckpointWindow extends Activity {
                 color = Checkpoint.BLACK;
             }
         });
-        findViewById(R.id.captureImage).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.blackflagimage).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivityForResult(new Intent(MediaStore.ACTION_IMAGE_CAPTURE),105);
@@ -110,8 +110,10 @@ public class EditCheckpointWindow extends Activity {
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             FirebaseStorage storage = FirebaseStorage.getInstance();
             StorageReference storageRef = storage.getReference();
-            StorageReference imageRef = storageRef.child("images/image"+  +".jpg");
+            StorageReference imageRef = storageRef.child("images/image" + "size" + ".jpg");
+        }
     }
+
     private void save(){
         checkpoint.setColor(color);
         checkpoint.setDescription(String.valueOf(descriptionbox.getText()));
