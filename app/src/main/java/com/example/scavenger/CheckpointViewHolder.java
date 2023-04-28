@@ -1,6 +1,8 @@
 package com.example.scavenger;
 
+import android.media.Image;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,9 +11,11 @@ public class CheckpointViewHolder extends RecyclerView.ViewHolder {
 
     TextView checknum;
 
-    TextView editview;
+    ImageView editview;
 
-    TextView deleteview;
+    ImageView deleteview;
+
+    ImageView flagimage;
 
     boolean cpclicked;
 
@@ -21,8 +25,9 @@ public class CheckpointViewHolder extends RecyclerView.ViewHolder {
     {
         super(itemView);
         this.checknum = (TextView) itemView.findViewById(R.id.checknum);
-        this.editview = (TextView) itemView.findViewById(R.id.editcptextview);
-        this.deleteview = (TextView) itemView.findViewById(R.id.deletecptextview);
+        this.editview = (ImageView) itemView.findViewById(R.id.editcptextview);
+        this.deleteview = (ImageView) itemView.findViewById(R.id.deletecptextview);
+        this.flagimage = (ImageView) itemView.findViewById(R.id.flagimage);
         this.view  = itemView;
     }
 

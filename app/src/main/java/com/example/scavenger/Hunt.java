@@ -20,7 +20,7 @@ public class Hunt {
     private String desc;
 
     /**
-     * The user as a FirebaseUser object that created this Hunt
+     * The user that created this Hunt
      */
     private String creator;
 

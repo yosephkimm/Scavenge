@@ -63,6 +63,7 @@ public class CheckpointRVAdapter extends RecyclerView.Adapter<CheckpointViewHold
         String text = (checkpoint.getPosition()+1)+"";
         viewHolder.checknum.setText(text);
         CheckpointRVAdapter adapter = this;
+        viewHolder.view.findViewById(R.id.cpcardview).setBackgroundColor(Color.TRANSPARENT);
 
         viewHolder.view.findViewById(R.id.editcptextview).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,7 +83,7 @@ public class CheckpointRVAdapter extends RecyclerView.Adapter<CheckpointViewHold
             }
         });
 
-        // when one of the checkpoints is clicked on, open up the edit checkpoint window
+        // when one of the checkpoints is clicked on
         viewHolder.view.findViewById(R.id.cpcardview).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
