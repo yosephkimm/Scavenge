@@ -1,4 +1,4 @@
-package com.example.scavenger;
+package com.example.scavenger.playhuntfiles;
 
 import android.Manifest;
 import android.app.Activity;
@@ -40,6 +40,9 @@ import com.example.scavenger.edithuntfiles.CheckpointRVAdapter;
 import com.example.scavenger.edithuntfiles.CreateHuntSettingsFragment;
 import com.example.scavenger.edithuntfiles.EditHuntFragment;
 import com.example.scavenger.leaderboardfiles.PlayerTime;
+import com.example.scavenger.playhuntfiles.HintWindow;
+import com.example.scavenger.playhuntfiles.Mapping;
+import com.example.scavenger.playhuntfiles.PlayCheckpointRVAdapter;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -150,13 +153,6 @@ public class PlayHunt extends Fragment {
 
         imageView = binding.capturedImage;
 
-        binding.buttonHint.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getActivity(), HintWindow.class));
-                ((Activity) getActivity()).overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_in);
-            }
-        });
         binding.buttonQuit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -248,7 +244,8 @@ public class PlayHunt extends Fragment {
         }
     }
 
-    public void displayHints() {
+    public void displayHints(Checkpoint checkpoint) {
+        HintWindow.checkpoint = checkpoint;
         startActivity(new Intent(getActivity(), HintWindow.class));
         ((Activity) getActivity()).overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_in);
     }
@@ -307,7 +304,6 @@ public class PlayHunt extends Fragment {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             binding.capturedImage.setImageBitmap(imageBitmap);
-            Bitmap testBitmap= imageBitmap;
                     //BitmapFactory.decodeResource(getResources(), R.drawable.test_run);
             FirebaseStorage storage = FirebaseStorage.getInstance();
             StorageReference storageRef = storage.getReference();

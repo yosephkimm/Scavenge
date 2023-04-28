@@ -1,8 +1,6 @@
 package com.example.scavenger.playhuntfiles;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,8 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.scavenger.Checkpoint;
 import com.example.scavenger.R;
-import com.example.scavenger.edithuntfiles.CheckpointRVAdapter;
-import com.example.scavenger.edithuntfiles.CheckpointViewHolder;
 
 import java.util.Collections;
 import java.util.List;
@@ -56,7 +52,7 @@ public class PlayCheckpointRVAdapter extends RecyclerView.Adapter<PlayCheckpoint
         viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((PlayHunt)currentFragment).displayHints();
+                ((PlayHunt)currentFragment).displayHints(checkpoint);
             }
         });
     }

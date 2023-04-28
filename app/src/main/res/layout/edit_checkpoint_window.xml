@@ -144,16 +144,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="done"
-                android:layout_margin="10dp"
-                android:backgroundColor="@color/black"/>
+                android:layout_margin="10dp"/>
 
             <Button
                 android:id="@+id/capture_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="image"
-                android:layout_margin="10dp"
-                android:backgroundColor="@color/black"/>
+                android:layout_margin="10dp"/>
         </LinearLayout>
 
 

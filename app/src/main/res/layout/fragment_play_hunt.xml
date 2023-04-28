@@ -33,12 +33,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_gravity="bottom|left">
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/button_hint"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:src="@android:drawable/ic_menu_help" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/button_map"
@@ -88,7 +82,8 @@
         android:text="00:00:00"
         android:textSize="34sp"
         android:textColor = "@color/black"
-        android:layout_gravity="center|top"/>
+        android:layout_gravity="center|top"
+        android:background="@color/lb_grey"/>
 
     <LinearLayout
         android:layout_width="match_parent"
