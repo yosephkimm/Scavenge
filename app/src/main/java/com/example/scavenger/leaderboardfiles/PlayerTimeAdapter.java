@@ -1,4 +1,4 @@
-package com.example.scavenger;
+package com.example.scavenger.leaderboardfiles;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.example.scavenger.R;
 
 import java.util.ArrayList;
 import java.util.Comparator;
