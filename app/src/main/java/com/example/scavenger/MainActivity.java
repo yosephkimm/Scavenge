@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+
         getSupportActionBar().hide(); // hides the action bar at the top of the screen
 
         // Initialize Firebase Auth
@@ -210,13 +211,15 @@ public class MainActivity extends AppCompatActivity {
     private void HomeActivity() {
         navController.navigate(R.id.homeFragment2);
     }
-
+/*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.activity_main_drawer, menu);
         return true;
     }
+
+ */
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

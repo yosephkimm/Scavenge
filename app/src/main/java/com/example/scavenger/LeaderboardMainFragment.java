@@ -3,6 +3,8 @@ package com.example.scavenger;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.SupportActionModeWrapper;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 
@@ -43,8 +45,10 @@ public class LeaderboardMainFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        getActivity().getMenuInflater().inflate(R.menu.actionbar_menu, menu);
+        inflater.inflate(R.menu.actionbar_menu, menu);
         MenuItem menuItem = menu.findItem(R.id.search);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Leaderboards");
         SearchView searchView = (SearchView) menuItem.getActionView();
         searchView.setQueryHint("Search here");
 
@@ -60,14 +64,6 @@ public class LeaderboardMainFragment extends Fragment {
                 return false;
             }
         });
-
-        menuItem.setVisible(true);
-    }
-
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        MenuItem item=menu.findItem(R.id.search);
-        item.setVisible(false);
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
@@ -84,14 +80,12 @@ public class LeaderboardMainFragment extends Fragment {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         // get the currently signed in user account's email
-                        String userEmail = GoogleSignIn.getLastSignedInAccount(getActivity()).getEmail();
 
                         if (!queryDocumentSnapshots.isEmpty()) {
                             List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
                             ArrayList<Hunt> huntArrayList = new ArrayList<Hunt>();
                             for (DocumentSnapshot d : list) {
-                                if (d.toObject(Hunt.class).getCreator().equalsIgnoreCase(userEmail))
-                                    huntArrayList.add(d.toObject(Hunt.class));
+                                huntArrayList.add(d.toObject(Hunt.class));
                             }
                             adapter = new HuntArrayAdapter(getActivity(), huntArrayList, LeaderboardMainFragment.this);
                             huntGV.setAdapter(adapter);
@@ -101,5 +95,11 @@ public class LeaderboardMainFragment extends Fragment {
                         }
                     }
                 });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
     }
 }
